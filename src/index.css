@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+:root {
+  /* 배경 */
+  --color-outer: #0d0a1f; /* body 배경 0a0a0a*/
+  --color-bg: #120a29; /* 앱 메인 배경 */
+  --color-surface: #221545; /* 카드 배경 */
+  --color-surface-elevated: #3d2870; /* 호버 · 입력창 · 카드 테두리 */
+
+  /* 텍스트 */
+  --color-text-primary: #ffffff; /* 곡명 · 제목 */
+  --color-text-secondary: #a991cc; /* 가수명 · 부가 정보 */
+
+  /* 태그 — 감성/분위기 (핑크) */
+  --tag-mood-bg: #3d0a28;
+  --tag-mood-text: #f472b6;
+  --tag-mood-border: #cc1060;
+
+  /* 태그 — 키 (시안) */
+  --tag-key-bg: #002a38;
+  --tag-key-text: #00e5ff;
+  --tag-key-border: #0099bb;
+
+  /* 태그 — 상황 (보라) */
+  --tag-group-bg: #220a40;
+  --tag-group-text: #bf5fff; /* #ffc45a 노랑으로 갈까..*/
+  --tag-group-border: #8b00ff; /* #ffd47e */
+
+  /* 액센트 */
+  --color-accent: #f472b6; /* FAB · CTA 버튼 */
+}
+
+body {
+  background-color: var(--color-outer);
+  color: var(--color-text-primary);
+}
