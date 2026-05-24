@@ -2,14 +2,16 @@
 
 :root {
   /* 배경 */
-  --color-outer: #0d0a1f; /* body 배경 0a0a0a*/
+  --color-outer: #0d0a1f; /* body 배경 */
   --color-bg: #120a29; /* 앱 메인 배경 */
   --color-surface: #221545; /* 카드 배경 */
-  --color-surface-elevated: #3d2870; /* 호버 · 입력창 · 카드 테두리 */
+  --color-surface-elevated: #5f5b6c; /* 호버 · 입력창 · 카드 테두리 */
+  --color-navbar: #180c39; /* 하단 네비게이션 바 배경 */
 
   /* 텍스트 */
   --color-text-primary: #ffffff; /* 곡명 · 제목 */
   --color-text-secondary: #a991cc; /* 가수명 · 부가 정보 */
+  --color-text-placeholder: #928e9a; /* 플레이스홀더 */
 
   /* 태그 — 감성/분위기 (핑크) */
   --tag-mood-bg: #3d0a28;
