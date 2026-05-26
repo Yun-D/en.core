@@ -19,7 +19,8 @@ const BottomNavbar = ({ active, onChange }: BottomNavProps) => {
   return (
     <nav
       className="fixed left-1/2 transform -translate-x-1/2 bottom-0 w-full max-w-107.5 bg-(--color-navbar) 
-      border-t-[0.5px] border-(--color-surface-elevated) flex justify-around items-center pt-2.5 pb-6 z-100"
+      border-t-[0.5px] border-(--color-surface-elevated) flex justify-around items-center 
+      pt-1.5 pb-[calc(env(safe-area-inset-bottom)+8px)] z-100"
     >
       {tabs.map((tab) => {
         const isActive = active === tab.key;
@@ -27,10 +28,10 @@ const BottomNavbar = ({ active, onChange }: BottomNavProps) => {
           <button
             key={tab.key}
             onClick={() => onChange(tab.key)}
-            className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer py-1 px-4"
+            className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer px-4"
           >
             <div
-              className={`w-13 h-7 rounded-full flex items-center justify-center transition-background duration-200
+              className={`w-12 h-6 rounded-full flex items-center justify-center transition-background duration-200
               ${isActive ? "bg-[rgba(244,114,182,0.18)]" : "bg-transparent"}`}
             >
               <i
@@ -42,7 +43,7 @@ const BottomNavbar = ({ active, onChange }: BottomNavProps) => {
               />
             </div>
             <span
-              className={`text-xs ${isActive ? "font-semibold text-(--color-accent)" : "font-normal text-(--color-text-placeholder)"} transition-colors duration-200`}
+              className={`text-[12px] ${isActive ? "font-semibold text-(--color-accent)" : "font-normal text-(--color-text-placeholder)"} transition-colors duration-200`}
             >
               {tab.label}
             </span>
