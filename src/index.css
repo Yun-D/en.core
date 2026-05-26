@@ -20,7 +20,7 @@
 
   /* 태그 — 키 (시안) */
   --tag-key-bg: #002a38;
-  --tag-key-text: #00e5ff;
+  --tag-key-text: #00e5ff; /* #66f9ff 좀 더 밝은 시안으로 할까.. */
   --tag-key-border: #0099bb;
 
   /* 태그 — 상황 (보라) */
@@ -29,7 +29,7 @@
   --tag-group-border: #8b00ff; /* #ffd47e */
 
   /* 액센트 */
-  --color-accent: #f472b6; /* FAB · CTA 버튼 */
+  --color-accent: #ff4d8d;
 }
 
 body {
