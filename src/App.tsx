@@ -17,7 +17,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabKey>("songs");
 
   return (
-    <div className="max-w-107.5 mx-auto min-h-screen bg-(--color-bg) px-5 pb-24">
+    <div className="max-w-107.5 mx-auto min-h-screen bg-(--color-bg) px-5 pb-24 wrap-break-word overflow-hidden">
       {pages[activeTab]} {/* 동적 페이지 렌더링 */}
       <BottomNavbar active={activeTab} onChange={setActiveTab} />
     </div>
