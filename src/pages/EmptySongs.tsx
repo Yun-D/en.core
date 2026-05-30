@@ -3,7 +3,7 @@ type EmptySongsProps = {
 };
 const EmptySongs = ({ onSearchClick }: EmptySongsProps) => {
   return (
-    <div className="flex flex-col items-center text-center justify-center gap-3 py-5">
+    <div className="flex flex-col items-center text-center justify-center gap-3">
       <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550]">
         <i className="text-xl ti ti-music" />
       </div>

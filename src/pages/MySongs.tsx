@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import HeroSection from "../components/HeroSection";
 import StickyHeader from "../components/StickyHeader";
 import EmptySongs from "./EmptySongs";
@@ -12,6 +12,14 @@ const MySongs = () => {
 
   //TODO: 실제 데이터에 따라 isEmpty 판단 로직 수정 필요
   const isEmpty = dumpData.favsong === 0 && dumpData.latersong === 0; // 저장된 곡이 없는지 여부 판단
+
+  useEffect(() => {
+    document.body.style.overflow = isEmpty ? "hidden" : ""; // 곡이 없을 때는 스크롤 잠금, 있으면 해제
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isEmpty]);
+
   const onSearchClick = () => {
     // TODO: 검색 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
   };
@@ -44,7 +52,8 @@ const MySongs = () => {
         </div>
 
         {/* 태그 */}
-        <div className="flex flex-col gap-2 mt-6">
+        <div className="flex flex-col gap-2 mt-4">
+          <p className="text-xs text-(--color-text-placeholder)">분위기</p>
           <div className="flex gap-2 flex-wrap">
             {tags
               .filter((tag) => tag.category === "mood")
@@ -58,6 +67,7 @@ const MySongs = () => {
                 </button>
               ))}
           </div>
+          <p className="text-xs text-(--color-text-placeholder) mt-2">상황</p>
           <div className="flex gap-2 flex-wrap">
             {tags
               .filter((tag) => tag.category === "situation")
