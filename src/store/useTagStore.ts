@@ -5,9 +5,8 @@ import { create } from "zustand";
 type TagStore = {
   tags: Tag[];
 
-  // TODO: 커스텀 태그 추가/삭제 함수는 나중에 구현..
   addCustomTag: (label: string) => void;
-  // removeCustomTag: (id: number) => void;
+  removeCustomTag: (id: number) => void;
 };
 
 export const useTagStore = create<TagStore>()(
@@ -26,6 +25,10 @@ export const useTagStore = create<TagStore>()(
               isDefault: false,
             },
           ],
+        })),
+      removeCustomTag: (id: number) =>
+        set((state) => ({
+          tags: state.tags.filter((tag) => tag.id !== id),
         })),
     }),
     { name: "tag-store" }, // 로컬 스토리지에 "tag-store"라는 키로 저장
