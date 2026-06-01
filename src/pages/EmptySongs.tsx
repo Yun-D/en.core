@@ -1,7 +1,8 @@
 type EmptySongsProps = {
   onSearchClick: () => void; // 검색 탭으로 이동하는 함수 받아오기
+  onAddClick: () => void; // 직접 추가하기 함수 받아오기
 };
-const EmptySongs = ({ onSearchClick }: EmptySongsProps) => {
+const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
   return (
     <div className="flex flex-col items-center text-center justify-center gap-3">
       <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550]">
@@ -15,13 +16,27 @@ const EmptySongs = ({ onSearchClick }: EmptySongsProps) => {
         </p>
       </div>
 
-      <button
-        onClick={onSearchClick}
-        className="cursor-pointer mt-4 border border-(--color-accent) bg-[#f472b590] px-5 py-2 text-sm font-semibold rounded-full items-center flex"
-      >
-        <i className="ti ti-search mr-2" />
-        노래 검색하러 가기
-      </button>
+      <div className="flex justify-center flex-col items-center">
+        <button
+          onClick={onSearchClick}
+          className="cursor-pointer mt-4 border border-(--color-accent) 
+          bg-[#f472b590] hover:bg-[#e37fb3] transition-colors duration-200
+          px-5 py-2 text-sm font-semibold rounded-full items-center flex"
+        >
+          <i className="ti ti-search mr-2" />
+          노래 검색하러 가기
+        </button>
+
+        <button
+          onClick={onAddClick}
+          className="cursor-pointer mt-2.5 border border-(--color-accent) 
+          bg-[#f472b590] hover:bg-[#e37fb3] transition-colors duration-200
+          px-5 py-2 text-sm font-semibold rounded-full items-center flex"
+        >
+          <i className="ti ti-plus mr-2" />
+          직접 추가하기
+        </button>
+      </div>
     </div>
   );
 };

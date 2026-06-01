@@ -23,6 +23,9 @@ const MySongs = () => {
   const onSearchClick = () => {
     // TODO: 검색 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
   };
+  const onAddClick = () => {
+    // TODO: 곡 추가 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
+  };
 
   return (
     <div>
@@ -84,7 +87,11 @@ const MySongs = () => {
         </div>
       </div>
 
-      {isEmpty && <EmptySongs onSearchClick={onSearchClick} />}
+      {isEmpty && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center pb-20 pt-68">
+          <EmptySongs onSearchClick={onSearchClick} onAddClick={onAddClick} />
+        </div>
+      )}
     </div>
   );
 };
