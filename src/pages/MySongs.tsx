@@ -1,17 +1,21 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
 import StickyHeader from "../components/StickyHeader";
 import EmptySongs from "./EmptySongs";
 import { useTagStore } from "../store/useTagStore";
+import AddSongDrawer from "../components/AddSongDrawer";
+import { useSongStore } from "../store/useSongStore";
 
 const MySongs = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
+
   const dumpData = { favsong: 0, latersong: 0 };
 
   const heroRef = useRef<HTMLDivElement>(null); // HeroSection의 DOM 요소 참조를 위한 ref 생성
   const tags = useTagStore((state) => state.tags); // 태그 스토어에서 태그 데이터 가져오기
+  const songs = useSongStore((state) => state.songs); // 곡 스토어에서 곡 데이터 가져오기
 
-  //TODO: 실제 데이터에 따라 isEmpty 판단 로직 수정 필요
-  const isEmpty = dumpData.favsong === 0 && dumpData.latersong === 0; // 저장된 곡이 없는지 여부 판단
+  const isEmpty = songs.length === 0; // 저장된 곡이 없는지 여부 판단
 
   useEffect(() => {
     document.body.style.overflow = isEmpty ? "hidden" : ""; // 곡이 없을 때는 스크롤 잠금, 있으면 해제
@@ -24,7 +28,7 @@ const MySongs = () => {
     // TODO: 검색 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
   };
   const onAddClick = () => {
-    // TODO: 곡 추가 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
+    setIsDrawerOpen(true);
   };
 
   return (
@@ -32,7 +36,7 @@ const MySongs = () => {
       <div ref={heroRef}>
         <HeroSection
           title="나의 애창곡"
-          subtitle={`내 애창곡 ${dumpData.favsong} · 나중에 부를 곡 ${dumpData.latersong}`}
+          subtitle={`내 애창곡 ${dumpData.favsong} · 나중에 부를 곡 ${dumpData.latersong}`} //TODO: 실제 데이터로 대체 필요
         />
       </div>
       <StickyHeader title="나의 애창곡" heroRef={heroRef} />
@@ -90,6 +94,11 @@ const MySongs = () => {
       {isEmpty && (
         <div className="fixed inset-0 z-40 flex items-center justify-center pb-20 pt-68">
           <EmptySongs onSearchClick={onSearchClick} onAddClick={onAddClick} />
+
+          <AddSongDrawer
+            isOpen={isDrawerOpen}
+            onClose={() => setIsDrawerOpen(false)}
+          />
         </div>
       )}
     </div>
