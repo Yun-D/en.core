@@ -14,19 +14,19 @@
   --color-text-placeholder: #928e9a; /* 플레이스홀더 */
 
   /* 태그 — 감성/분위기 (핑크) */
-  --tag-mood-bg: #fa6dbf6b;
+  --tag-mood-bg: rgba(184, 83, 142, 0.5);
   --tag-mood-text: #f9a4d0;
   --tag-mood-border: #c3497e;
   --tag-mood-hover-bg: #ff95cc;
   --tag-mood-hover-text: #5d1d3e;
 
   /* 태그 — 키 (시안) */
-  --tag-key-bg: #002a386b;
+  --tag-key-bg: rgb(0 149 187 / 0.5); /* 0 42 56*/
   --tag-key-text: #00e5ff; /* #66f9ff 좀 더 밝은 시안으로 할까.. */
   --tag-key-border: #0099bb;
 
   /* 태그 — 상황 (노랑) */
-  --tag-situation-bg: #b198696b;
+  --tag-situation-bg: rgb(177 152 105 / 0.5);
   --tag-situation-text: #ffc45a;
   --tag-situation-border: #ffd47e;
   --tag-situation-hover-bg: #f8d056;

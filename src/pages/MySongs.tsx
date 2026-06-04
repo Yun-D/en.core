@@ -5,11 +5,10 @@ import EmptySongs from "./EmptySongs";
 import { useTagStore } from "../store/useTagStore";
 import AddSongDrawer from "../components/AddSongDrawer";
 import { useSongStore } from "../store/useSongStore";
+import SongCard from "../components/SongCard";
 
 const MySongs = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
-
-  const dumpData = { favsong: 0, latersong: 0 };
 
   const heroRef = useRef<HTMLDivElement>(null); // HeroSection의 DOM 요소 참조를 위한 ref 생성
   const tags = useTagStore((state) => state.tags); // 태그 스토어에서 태그 데이터 가져오기
@@ -36,7 +35,7 @@ const MySongs = () => {
       <div ref={heroRef}>
         <HeroSection
           title="나의 애창곡"
-          subtitle={`내 애창곡 ${dumpData.favsong} · 나중에 부를 곡 ${dumpData.latersong}`} //TODO: 실제 데이터로 대체 필요
+          subtitle={`내 애창곡 ${songs.length} · 나중에 부를 곡 ${songs.filter((song) => song.isLater).length}`}
         />
       </div>
       <StickyHeader title="나의 애창곡" heroRef={heroRef} />
@@ -91,16 +90,23 @@ const MySongs = () => {
         </div>
       </div>
 
+      {/* 곡리스트  ------------------------------------------------ */}
+      <div className="flex flex-col gap-2 mt-8 ">
+        {songs.map((song) => (
+          <SongCard key={song.id} song={song} />
+        ))}
+      </div>
+
       {isEmpty && (
         <div className="fixed inset-0 z-40 flex items-center justify-center pb-20 pt-68">
           <EmptySongs onSearchClick={onSearchClick} onAddClick={onAddClick} />
-
-          <AddSongDrawer
-            isOpen={isDrawerOpen}
-            onClose={() => setIsDrawerOpen(false)}
-          />
         </div>
       )}
+
+      <AddSongDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </div>
   );
 };
