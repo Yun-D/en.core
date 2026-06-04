@@ -30,7 +30,7 @@ const SongCard = ({ song }: SongCardProps) => {
         </div>
 
         {(song.number_tj || song.number_ky) && (
-          <div className="flex flex-col items-end gap-1 shrink-0">
+          <div className="flex flex-col items-end gap-1/2 shrink-0 mr-4">
             {song.number_tj && (
               <div className="flex items-baseline gap-1">
                 <span className="text-xs text-(--color-text-placeholder)">

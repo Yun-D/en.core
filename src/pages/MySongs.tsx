@@ -88,10 +88,20 @@ const MySongs = () => {
               ))}
           </div>
         </div>
+
+        <div className="flex justify-between mt-8 items-center">
+          <span className="text-base">나의 애창곡</span>
+          <button
+            onClick={onAddClick}
+            className="flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
+          >
+            <i className="ti ti-plus text-xs" />곡 추가
+          </button>
+        </div>
       </div>
 
       {/* 곡리스트  ------------------------------------------------ */}
-      <div className="flex flex-col gap-2 mt-8 ">
+      <div className="flex flex-col gap-2 mt-3 ">
         {songs.map((song) => (
           <SongCard key={song.id} song={song} />
         ))}
