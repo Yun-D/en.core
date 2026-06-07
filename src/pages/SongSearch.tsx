@@ -17,6 +17,7 @@ const SongSearch = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]); // 검색 결과 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [isSearched, setIsSearched] = useState(false); // 검색 여부 상태 (검색 결과 없을 때를 위해..)
 
   const songs = useSongStore((state) => state.songs);
   const addSong = useSongStore((state) => state.addSong);
@@ -33,6 +34,7 @@ const SongSearch = () => {
   const handleSearch = async () => {
     if (!query.trim()) return; // 검색어가 비어있으면 검색하지 않음
     setIsLoading(true);
+    setIsSearched(true);
 
     try {
       const [titleRes, singerRes] = await Promise.all([
@@ -99,6 +101,7 @@ const SongSearch = () => {
             onClick={() => {
               setBrand("tj");
               setResults([]);
+              setIsSearched(false);
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border
             transition-colors ${
@@ -116,6 +119,7 @@ const SongSearch = () => {
             onClick={() => {
               setBrand("kumyoung");
               setResults([]);
+              setIsSearched(false);
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border
               transition-colors ${
@@ -155,6 +159,7 @@ const SongSearch = () => {
               onClick={() => {
                 setQuery("");
                 setResults([]);
+                setIsSearched(false);
               }}
               className="flex items-center"
             >
@@ -237,7 +242,7 @@ const SongSearch = () => {
         )}
 
         {/* 검색 결과 없음 ------------------------------------------------*/}
-        {!isLoading && query && results.length === 0 && (
+        {!isLoading && isSearched && results.length === 0 && (
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
               <i className="ti ti-search text-xl mb-0.5" />
