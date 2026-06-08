@@ -60,7 +60,7 @@ const MySongs = () => {
             <i className="ti ti-search text-(--color-text-placeholder)" />
             <input
               type="text"
-              className="text-sm outline-none w-full"
+              className="text-base outline-none w-full"
               placeholder="곡 제목이나 가수로 검색해보세요"
             />
           </div>

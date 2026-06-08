@@ -22,7 +22,7 @@ const SongCard = ({ song }: SongCardProps) => {
   return (
     <div className="bg-(--color-surface) rounded-2xl p-4 mb-1">
       <div className="flex items-center">
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 mr-2">
           <p className="text-sm font-bold truncate">{song.title}</p>
           <p className="text-xs text-(--color-text-secondary) mt-0.5">
             {song.artist}
