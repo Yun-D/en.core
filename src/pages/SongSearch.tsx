@@ -1,6 +1,7 @@
 import { useState } from "react";
 import HeroSection from "../components/HeroSection";
 import { useSongStore } from "../store/useSongStore";
+import NewSongs from "./NewSongs";
 
 type BrandKey = "tj" | "kumyoung";
 
@@ -19,12 +20,12 @@ const SongSearch = () => {
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isSearched, setIsSearched] = useState(false); // 검색 여부 상태 (검색 결과 없을 때를 위해..)
 
-  const songs = useSongStore((state) => state.songs);
+  const savedSongs = useSongStore((state) => state.songs);
   const addSong = useSongStore((state) => state.addSong);
 
   // 현재 검색 브랜드에 해당하는 곡 번호가 이미 저장된 곡 목록에 있는지 확인
   const isAdded = (no: string) => {
-    return songs.some((song) =>
+    return savedSongs.some((song) =>
       brand === "tj"
         ? song.number_tj === Number(no)
         : song.number_ky === Number(no),
@@ -171,7 +172,7 @@ const SongSearch = () => {
         {/* 검색 결과 ------------------------------------------------*/}
         {isLoading && (
           <p className="text-sm text-(--color-text-placeholder) mt-2">
-            🔎 검색 중...
+            🔎 검색중...
           </p>
         )}
         {!isLoading && results.length > 0 && (
@@ -253,6 +254,9 @@ const SongSearch = () => {
           </div>
         )}
       </div>
+
+      {/* 신곡 목록 ------------------------------------------------*/}
+      {!isSearched && <NewSongs brand={brand} />}
     </div>
   );
 };
