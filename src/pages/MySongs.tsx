@@ -6,9 +6,11 @@ import { useTagStore } from "../store/useTagStore";
 import AddSongDrawer from "../components/AddSongDrawer";
 import { useSongStore } from "../store/useSongStore";
 import SavedSongCard from "../components/SavedSongCard";
+import type { Song } from "../type/songs";
 
 const MySongs = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
+  const [editingSong, setEditingSong] = useState<Song | null>(null);
 
   const preListRef = useRef<HTMLDivElement>(null); // 곡 리스트가 나오기 전의 DOM 요소 참조를 위한 ref 생성
   const tags = useTagStore((state) => state.tags); // 태그 스토어에서 태그 데이터 가져오기
@@ -23,10 +25,16 @@ const MySongs = () => {
     };
   }, [isEmpty]);
 
-  const onSearchClick = () => {
+  const handleSearchClick = () => {
     // TODO: 검색 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
   };
-  const onAddClick = () => {
+  const handleAddClick = () => {
+    setEditingSong(null); // 곡 추가모드
+    setIsDrawerOpen(true);
+  };
+
+  const handleEditClick = (song: Song) => {
+    setEditingSong(song); // 수정모드
     setIsDrawerOpen(true);
   };
 
@@ -40,7 +48,7 @@ const MySongs = () => {
 
         <StickyHeader title="나의 애창곡" preListRef={preListRef}>
           <button
-            onClick={onAddClick}
+            onClick={handleAddClick}
             className="flex items-center gap-1 text-sm text-(--color-text-primary) 
             border border-(--color-text-primary) rounded-lg px-3 py-1"
           >
@@ -100,7 +108,7 @@ const MySongs = () => {
           <div className="flex justify-between mt-8 items-center">
             <span className="text-base">나의 애창곡</span>
             <button
-              onClick={onAddClick}
+              onClick={handleAddClick}
               className="flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
               <i className="ti ti-plus text-xs" />곡 추가
@@ -112,19 +120,28 @@ const MySongs = () => {
       {/* 곡리스트  ------------------------------------------------ */}
       <div className="flex flex-col gap-2 mt-3 ">
         {songs.map((song) => (
-          <SavedSongCard key={song.id} song={song} />
+          <SavedSongCard
+            key={song.id}
+            song={song}
+            onClick={() => handleEditClick(song)}
+          />
         ))}
       </div>
 
       {isEmpty && (
         <div className="fixed inset-0 z-40 flex items-center justify-center pb-20 pt-68">
-          <EmptySongs onSearchClick={onSearchClick} onAddClick={onAddClick} />
+          <EmptySongs
+            onSearchClick={handleSearchClick}
+            onAddClick={handleAddClick}
+          />
         </div>
       )}
 
       <AddSongDrawer
+        key={editingSong?.id ?? "new"} // key가 바뀌면 새로 마운트되어 useState 초기값 다시 계산됨(추가 모드의 경우 'new', 수정 모드의 경우 각 곡의 id가 key가 됨)
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        editSong={editingSong}
       />
     </div>
   );

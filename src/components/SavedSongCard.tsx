@@ -3,9 +3,10 @@ import { useTagStore } from "../store/useTagStore";
 
 type SavedSongCardProps = {
   song: Song;
+  onClick?: () => void;
 };
 
-const SavedSongCard = ({ song }: SavedSongCardProps) => {
+const SavedSongCard = ({ song, onClick }: SavedSongCardProps) => {
   const { tags } = useTagStore();
 
   const songTags = tags.filter((tag) => song.tags.includes(tag.id));
@@ -20,7 +21,10 @@ const SavedSongCard = ({ song }: SavedSongCardProps) => {
         : `키 ${song.song_key}`;
 
   return (
-    <div className="bg-(--color-surface) rounded-2xl p-4 mb-1">
+    <div
+      onClick={onClick}
+      className="bg-(--color-surface) rounded-2xl p-4 mb-1"
+    >
       <div className="flex items-center">
         <div className="flex-1 min-w-0 mr-2">
           <p className="text-sm font-bold truncate">{song.title}</p>

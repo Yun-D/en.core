@@ -2,22 +2,43 @@ import { useState } from "react";
 import { useTagStore } from "../store/useTagStore";
 import { useSongStore } from "../store/useSongStore";
 
+import { type Song } from "../type/songs";
+
 type AddSongDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
+  editSong?: Song | null; // 수정할 곡 받기_없으면 새로 추가하는 것
 };
 
-const AddSongDrawer = ({ isOpen, onClose }: AddSongDrawerProps) => {
+const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
   const { tags } = useTagStore();
-  const { addSong } = useSongStore();
+  const addSong = useSongStore((state) => state.addSong);
+  const updateSong = useSongStore((state) => state.updateSong);
 
-  const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("");
-  const [tjNumber, setTjNumber] = useState("");
-  const [kyNumber, setKyNumber] = useState("");
-  const [songKey, setSongKey] = useState(0);
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
-  const [isLater, setIsLater] = useState(false);
+  const [title, setTitle] = useState(editSong?.title ?? "");
+  const [artist, setArtist] = useState(editSong?.artist ?? "");
+  const [tjNumber, setTjNumber] = useState(
+    editSong?.number_tj ? String(editSong.number_tj) : "",
+  );
+  const [kyNumber, setKyNumber] = useState(
+    editSong?.number_ky ? String(editSong.number_ky) : "",
+  );
+  const [songKey, setSongKey] = useState(editSong?.song_key ?? 0);
+  const [selectedTags, setSelectedTags] = useState<number[]>(
+    editSong?.tags ?? [],
+  );
+  const [isLater, setIsLater] = useState(editSong?.isLater ?? false);
+
+  //노래 데이터 템플릿
+  const songData = {
+    title,
+    artist,
+    number_tj: tjNumber ? Number(tjNumber) : undefined,
+    number_ky: kyNumber ? Number(kyNumber) : undefined,
+    song_key: songKey,
+    tags: selectedTags,
+    isLater,
+  };
 
   const handleTagToggle = (tagId: number) => {
     setSelectedTags((prev) =>
@@ -29,24 +50,12 @@ const AddSongDrawer = ({ isOpen, onClose }: AddSongDrawerProps) => {
   const handleSave = () => {
     if (!title.trim() || !artist.trim()) return;
 
-    addSong({
-      title: title.trim(),
-      artist: artist.trim(),
-      number_tj: tjNumber ? Number(tjNumber) : undefined,
-      number_ky: kyNumber ? Number(kyNumber) : undefined,
-      song_key: songKey,
-      tags: selectedTags,
-      isLater: isLater,
-    });
+    if (editSong) {
+      updateSong(editSong.id, songData);
+    } else {
+      addSong(songData);
+    }
 
-    // Reset form fields
-    setTitle("");
-    setArtist("");
-    setTjNumber("");
-    setKyNumber("");
-    setSongKey(0);
-    setSelectedTags([]);
-    setIsLater(false);
     onClose();
   };
 
@@ -69,7 +78,9 @@ const AddSongDrawer = ({ isOpen, onClose }: AddSongDrawerProps) => {
 
         {/* 타이틀 -------------------------------------------------------- */}
         <div className="flex items-center justify-between mb-1">
-          <span className="text-xl font-bold text-white">애창곡 추가</span>
+          <span className="text-xl font-bold text-white">
+            {editSong ? "애창곡 수정" : "애창곡 추가"}
+          </span>
 
           <button
             onClick={onClose}
@@ -218,7 +229,7 @@ const AddSongDrawer = ({ isOpen, onClose }: AddSongDrawerProps) => {
           className="cursor-pointer w-full h-12 rounded-full bg-(--color-accent) text-white 
           font-semibold text-sm disabled:opacity-40"
         >
-          저장하기
+          {editSong ? "수정" : "저장"}
         </button>
       </div>
     </div>
