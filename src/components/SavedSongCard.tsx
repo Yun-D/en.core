@@ -1,4 +1,4 @@
-import { type Song } from "../data/songs";
+import { type Song } from "../type/songs";
 import { useTagStore } from "../store/useTagStore";
 
 type SavedSongCardProps = {

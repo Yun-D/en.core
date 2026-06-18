@@ -1,5 +1,5 @@
 import { useSongStore } from "../store/useSongStore";
-import { type BrandKey, type KaraokeAPISong } from "../data/api";
+import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
 export const useSongActions = (brand: BrandKey) => {
   const savedSongs = useSongStore((state) => state.songs);

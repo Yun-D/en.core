@@ -1,4 +1,4 @@
-import { type BrandKey, type KaraokeAPISong } from "../data/api";
+import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
 type Props = {
   song: KaraokeAPISong;

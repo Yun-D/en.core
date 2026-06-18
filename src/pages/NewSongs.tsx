@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import SongCard from "../components/SongCard";
 import { useSongActions } from "../hooks/useSongActions";
-import { type BrandKey, type KaraokeAPISong } from "../data/api";
+import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
 type NewSong = KaraokeAPISong & { brand: string; release: string };
 

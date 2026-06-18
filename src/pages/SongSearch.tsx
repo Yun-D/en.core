@@ -3,7 +3,7 @@ import HeroSection from "../components/HeroSection";
 import SongCard from "../components/SongCard";
 import NewSongs from "./NewSongs";
 import { useSongActions } from "../hooks/useSongActions";
-import { type BrandKey, type KaraokeAPISong } from "../data/api";
+import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
 type SearchResult = KaraokeAPISong & { brand: string };
 

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Song } from "../data/songs";
+import type { Song } from "../type/songs";
 import { persist } from "zustand/middleware";
 
 type SongStore = {

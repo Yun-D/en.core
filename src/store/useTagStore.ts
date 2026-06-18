@@ -1,5 +1,5 @@
 import { persist } from "zustand/middleware";
-import { DEFAULT_TAGS, type Tag } from "../data/tags";
+import { DEFAULT_TAGS, type Tag } from "../type/tags";
 import { create } from "zustand";
 
 type TagStore = {
