@@ -7,8 +7,13 @@ import AddSongDrawer from "../components/AddSongDrawer";
 import { useSongStore } from "../store/useSongStore";
 import SavedSongCard from "../components/SavedSongCard";
 import type { Song } from "../type/songs";
+import type { TabKey } from "../components/BottomNavbar";
 
-const MySongs = () => {
+type Props = {
+  onTabChange: (tab: TabKey) => void;
+};
+
+const MySongs = ({ onTabChange }: Props) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
   const [editingSong, setEditingSong] = useState<Song | null>(null);
 
@@ -26,7 +31,7 @@ const MySongs = () => {
   }, [isEmpty]);
 
   const handleSearchClick = () => {
-    // TODO: 검색 탭으로 이동하는 로직 구현 필요 (예: 라우터를 사용하여 이동)
+    onTabChange("search"); // 검색 탭으로 이동
   };
   const handleAddClick = () => {
     setEditingSong(null); // 곡 추가모드

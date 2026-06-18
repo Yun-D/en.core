@@ -1,6 +1,7 @@
 import { useSongStore } from "../store/useSongStore";
 import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
+// 검색 화면용 편의 훅
 export const useSongActions = (brand: BrandKey) => {
   const savedSongs = useSongStore((state) => state.songs);
   const addSong = useSongStore((state) => state.addSong);
