@@ -5,7 +5,7 @@ import EmptySongs from "./EmptySongs";
 import { useTagStore } from "../store/useTagStore";
 import AddSongDrawer from "../components/AddSongDrawer";
 import { useSongStore } from "../store/useSongStore";
-import SongCard from "../components/SongCard";
+import SavedSongCard from "../components/SavedSongCard";
 
 const MySongs = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
@@ -112,7 +112,7 @@ const MySongs = () => {
       {/* 곡리스트  ------------------------------------------------ */}
       <div className="flex flex-col gap-2 mt-3 ">
         {songs.map((song) => (
-          <SongCard key={song.id} song={song} />
+          <SavedSongCard key={song.id} song={song} />
         ))}
       </div>
 
