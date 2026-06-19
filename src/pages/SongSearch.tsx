@@ -171,8 +171,11 @@ const SongSearch = () => {
             <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
               <i className="ti ti-search text-xl mb-0.5" />
             </div>
-            <p className="text-sm text-(--color-text-placeholder) mt-2">
-              '{query}' 검색 결과가 없어요
+            <p className="text-sm text-(--color-text-placeholder) mt-2 text-center">
+              '{query}' 검색 결과가 없어요. <br />
+              <br />
+              찾는 곡이 없다면 다른 표기로 검색해보세요 <br />
+              (한글 ↔ 영어 또는 제목 ↔ 가수 검색)
             </p>
           </div>
         )}

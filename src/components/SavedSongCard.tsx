@@ -23,7 +23,8 @@ const SavedSongCard = ({ song, onClick }: SavedSongCardProps) => {
   return (
     <div
       onClick={onClick}
-      className="bg-(--color-surface) rounded-2xl p-4 mb-1"
+      className="bg-(--color-surface) rounded-2xl p-4 mb-1 border border-(--color-surface-elevated)
+      hover:bg-(--color-surface-hover) transition-colors duration-200 cursor-pointer"
     >
       <div className="flex items-center">
         <div className="flex-1 min-w-0 mr-2">
