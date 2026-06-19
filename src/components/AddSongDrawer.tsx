@@ -14,6 +14,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
   const { tags } = useTagStore();
   const addSong = useSongStore((state) => state.addSong);
   const updateSong = useSongStore((state) => state.updateSong);
+  const removeSong = useSongStore((state) => state.removeSong);
 
   const [title, setTitle] = useState(editSong?.title ?? "");
   const [artist, setArtist] = useState(editSong?.artist ?? "");
@@ -28,6 +29,8 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
     editSong?.tags ?? [],
   );
   const [isLater, setIsLater] = useState(editSong?.isLater ?? false);
+
+  const [confirmDelete, setConfirmDelete] = useState(false); // 곡 삭제 확인
 
   //노래 데이터 템플릿
   const songData = {
@@ -56,6 +59,12 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
       addSong(songData);
     }
 
+    setConfirmDelete(false);
+    onClose();
+  };
+
+  const handleDelete = () => {
+    removeSong(editSong!.id);
     onClose();
   };
 
@@ -82,12 +91,35 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
             {editSong ? "애창곡 수정" : "애창곡 추가"}
           </span>
 
-          <button
-            onClick={onClose}
-            className="cursor-pointer text-(--color-text-placeholder) mr-1"
-          >
-            <i className="ti ti-x text-xl" />
-          </button>
+          <div className="flex flex-row gap-5 justify-center items-center">
+            {/* 삭제버튼 ----------------------------------------------------- */}
+            <div className="flex items-center gap-3">
+              {editSong &&
+                (confirmDelete ? (
+                  <button
+                    onClick={handleDelete}
+                    className="cursor-pointer text-xs font-semibold text-red-400 border border-red-400/40 
+                    rounded-lg px-2 py-1"
+                  >
+                    정말 삭제할까요?
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setConfirmDelete(true)}
+                    className="text-(--color-text-placeholder) w-7 h-7"
+                  >
+                    <i className="ti ti-trash text-lg" aria-label="삭제" />
+                  </button>
+                ))}
+            </div>
+
+            <button
+              onClick={onClose}
+              className="cursor-pointer text-(--color-text-placeholder) mr-1"
+            >
+              <i className="ti ti-x text-xl" />
+            </button>
+          </div>
         </div>
 
         {/* 곡명 + 가수 ----------------------------------------------------- */}
