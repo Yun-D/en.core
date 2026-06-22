@@ -1,7 +1,6 @@
 const tabs = [
   { key: "songs", label: "애창곡", icon: "ti-heart" },
-  { key: "search", label: "검색", icon: "ti-search" },
-  { key: "ai", label: "AI 추천", icon: "ti-sparkles" },
+  { key: "search", label: "곡 검색", icon: "ti-search" },
   { key: "setlist", label: "셋리스트", icon: "ti-dice" },
 ];
 
