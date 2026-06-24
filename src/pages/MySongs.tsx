@@ -79,6 +79,7 @@ const MySongs = ({ onTabChange }: Props) => {
           </div>
 
           {/* 태그 */}
+          {/* FIXME: 리팩토링 필요 */}
           <div className="flex flex-col gap-2 mt-4">
             <p className="text-xs text-(--color-text-placeholder)">분위기</p>
             <div className="flex gap-2 flex-wrap">

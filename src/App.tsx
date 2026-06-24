@@ -2,7 +2,6 @@ import { useState } from "react";
 import BottomNavbar, { type TabKey } from "./components/BottomNavbar";
 import MySongs from "./pages/MySongs";
 import SongSearch from "./pages/SongSearch";
-import AiPick from "./pages/AiPick";
 import Setlist from "./pages/Setlist";
 
 function App() {
@@ -12,7 +11,6 @@ function App() {
   const pages: Record<TabKey, React.ReactNode> = {
     songs: <MySongs onTabChange={setActiveTab} />,
     search: <SongSearch />,
-    ai: <AiPick />,
     setlist: <Setlist />,
   };
 

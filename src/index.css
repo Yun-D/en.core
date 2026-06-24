@@ -35,6 +35,7 @@
 
   /* 액센트 */
   --color-accent: #ff4d8d;
+  --color-accent-hover: #ea3577;
 }
 
 body {

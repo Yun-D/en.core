@@ -64,6 +64,7 @@ const SongSearch = () => {
 
       <div className="flex flex-col gap-3">
         {/* 브랜드 선택 -------------------------------------------*/}
+        {/* FIXME: 리팩토링(버튼 컴포넌트로 변경하기) */}
         <div className="flex gap-2">
           <button
             onClick={() => {
