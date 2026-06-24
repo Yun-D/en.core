@@ -13,7 +13,9 @@ interface Setlist {
 const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
+  const [isEditingCount, setIsEditingCount] = useState(false); // 곡 수 직접 입력 모드 토글
 
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [setlist, setSetlist] = useState<Setlist | null>(null); // 뽑은 셋리스트
   const hasResult = setlist !== null;
 
@@ -21,6 +23,7 @@ const Setlist = () => {
 
   // 선택모드 드로어 열기
   const handleOpenSelectPicker = () => {};
+
   // 랜덤모드 뽑기, 다시 뽑기
   const handleDraw = () => {
     setSetlist({
@@ -29,6 +32,18 @@ const Setlist = () => {
       createdAt: Date.now(),
     });
   };
+
+  const handleToggleTag = (tagId: number) => {
+    setSelectedTagIds(
+      (prev) =>
+        prev.includes(tagId)
+          ? prev.filter((id) => id !== tagId) // 이미 있으면 제거
+          : [...prev, tagId], // 없으면 추가
+    );
+  };
+
+  // 곡 수 직접 입력 확정
+  const handleCountInput = (value: string) => {};
 
   return (
     <div>
@@ -59,30 +74,44 @@ const Setlist = () => {
         <div className="flex gap-2 flex-wrap">
           {tags
             .filter((tag) => tag.category === "mood")
-            .map((tag) => (
-              <button
-                key={tag.id}
-                className="cursor-pointer rounded-full border border-(--tag-mood-border) bg-(--tag-mood-bg) text-(--tag-mood-text) 
-                  px-2 py-1 text-xs hover:bg-(--tag-mood-hover-bg) hover:text-(--tag-mood-hover-text)"
-                onClick={() => {}}
-              >
-                {tag.label}
-              </button>
-            ))}
+            .map((tag) => {
+              const active = selectedTagIds.includes(tag.id);
+
+              return (
+                <button
+                  key={tag.id}
+                  className={`cursor-pointer rounded-full border px-2 py-1 text-xs border-(--tag-mood-border) ${
+                    active
+                      ? "bg-(--tag-mood-hover-bg) text-(--tag-mood-hover-text)"
+                      : "bg-(--tag-mood-bg) text-(--tag-mood-text) hover:bg-(--tag-mood-hover-bg) hover:text-(--tag-mood-hover-text)"
+                  }`}
+                  onClick={() => handleToggleTag(tag.id)}
+                >
+                  {tag.label}
+                </button>
+              );
+            })}
         </div>
         <div className="flex gap-2 flex-wrap">
           {tags
             .filter((tag) => tag.category === "situation")
-            .map((tag) => (
-              <button
-                key={tag.id}
-                className="cursor-pointer rounded-full border border-(--tag-situation-border) bg-(--tag-situation-bg) text-(--tag-situation-text) 
-                  px-2 py-1 text-xs hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)"
-                onClick={() => {}}
-              >
-                {tag.label}
-              </button>
-            ))}
+            .map((tag) => {
+              const active = selectedTagIds.includes(tag.id);
+
+              return (
+                <button
+                  key={tag.id}
+                  className={`cursor-pointer rounded-full border px-2 py-1 text-xs border-(--tag-situation-border) ${
+                    active
+                      ? "bg-(--tag-situation-hover-bg) text-(--tag-situation-hover-text)"
+                      : "bg-(--tag-situation-bg) text-(--tag-situation-text) hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)"
+                  }`}
+                  onClick={() => handleToggleTag(tag.id)}
+                >
+                  {tag.label}
+                </button>
+              );
+            })}
         </div>
 
         {/* 곡 수 */}
@@ -95,7 +124,28 @@ const Setlist = () => {
             >
               <i className="ti ti-minus text-sm" />
             </button>
-            {count}곡
+
+            {isEditingCount ? (
+              <input
+                type="number"
+                defaultValue={count}
+                autoFocus
+                onBlur={(e) => {
+                  const n = parseInt(e.target.value, 10);
+                  if (!isNaN(n) && n >= 1) setCount(n);
+                  setIsEditingCount(false);
+                }}
+                className="w-11 bg-transparent text-center text-[15px] font-medium"
+              />
+            ) : (
+              <button
+                onClick={() => setIsEditingCount(true)}
+                className="min-w-11 border-b border-dashed border-white/25 pb-0.5 text-center text-[15px] font-medium"
+              >
+                {count}곡
+              </button>
+            )}
+
             <button
               onClick={() => setCount((c) => c + 1)}
               className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
