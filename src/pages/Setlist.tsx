@@ -2,22 +2,19 @@ import { useState, useEffect } from "react";
 import HeroSection from "../components/HeroSection";
 import { useTagStore } from "../store/useTagStore";
 import { useSongStore } from "../store/useSongStore";
-import type { Song } from "../type/songs";
-
-type SetlistMode = "random" | "choose"; // 뽑는 방식 타입
-interface Setlist {
-  items: Song[];
-  mode: SetlistMode;
-  createdAt: number;
-}
+import { useSetlistStore } from "../store/useSetlistStore";
+import type { SetlistMode } from "../store/useSetlistStore";
 
 const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
   const [isEditingCount, setIsEditingCount] = useState(false); // 곡 수 직접 입력 모드 토글
-
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-  const [setlist, setSetlist] = useState<Setlist | null>(null); // 뽑은 셋리스트
+
+  const setlist = useSetlistStore((state) => state.setlist);
+  const setSetlist = useSetlistStore((state) => state.setSetlist);
+  //const clearSetlist = useSetlistStore((state) => state.clearSetlist);
+
   const hasResult = setlist !== null;
 
   // 경과 시간 관련 ------------------------------------------------------------
@@ -199,7 +196,7 @@ const Setlist = () => {
         </button>
 
         {hasResult && setlist && (
-          <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
+          <div className="mt-6 border-t border-dashed border-(--color-surface-elevated) pt-4">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-xs text-(--color-text-placeholder)">
                 오늘의 셋리스트 - {setlist.items.length}곡
