@@ -5,6 +5,8 @@ import { useSongStore } from "../store/useSongStore";
 import { useSetlistStore } from "../store/useSetlistStore";
 import type { SetlistMode } from "../store/useSetlistStore";
 
+const STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 오래된 셋리스트로 판단하는 기준(6시간)
+
 const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
@@ -13,7 +15,6 @@ const Setlist = () => {
 
   const setlist = useSetlistStore((state) => state.setlist);
   const setSetlist = useSetlistStore((state) => state.setSetlist);
-  //const clearSetlist = useSetlistStore((state) => state.clearSetlist);
 
   const hasResult = setlist !== null;
 
@@ -35,8 +36,15 @@ const Setlist = () => {
     if (diffMin < 60) return `${diffMin}분 전`;
     return `${Math.floor(diffMin / 60)}시간 전`;
   };
-  // -------------------------------------------------------------------------
 
+  // 저장된 셋리스트가 6시간보다 오래됐는지 확인
+  const isStale = setlist !== null && now - setlist.createdAt > STALE_THRESHOLD;
+
+  // 재진입 안내문을 닫았는지 확인
+  const [noticeDismissed, setNoticeDismissed] = useState(false);
+  const showStaleNotice = isStale && !noticeDismissed;
+
+  // -------------------------------------------------------------------------
   // 선택모드 드로어 열기
   const handleOpenSelectPicker = () => {};
 
@@ -78,6 +86,23 @@ const Setlist = () => {
         title="셋리스트"
         subtitle={"애창곡 중 랜덤 n곡! 오늘의 셋리스트는?"}
       />
+
+      {showStaleNotice && setlist && (
+        <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
+          <div className="flex justify-between items-center">
+            <p className="text-sm">
+              <i className="ti ti-history mr-2 text-(--tag-key-text)" />
+              {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
+            </p>
+            <button
+              onClick={() => setNoticeDismissed(true)}
+              className="cursor-pointer"
+            >
+              <i className="ti ti-x text-lg text-(--tag-key-text)" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <p className="text-xs text-(--color-text-placeholder)">뽑는 방식</p>
       <div className="flex flex-row items-center gap-2 mt-2">
@@ -142,7 +167,7 @@ const Setlist = () => {
         </div>
 
         {/* 곡 수 */}
-        <div className="flex justify-between items-center gap-2 mt-4 mb-5">
+        <div className="flex justify-between items-center gap-2 mt-4 mb-2">
           <p className="text-xs text-(--color-text-placeholder)">곡 수</p>
           <div className="flex items-center gap-2">
             <button
@@ -196,7 +221,7 @@ const Setlist = () => {
         </button>
 
         {hasResult && setlist && (
-          <div className="mt-6 border-t border-dashed border-(--color-surface-elevated) pt-4">
+          <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-xs text-(--color-text-placeholder)">
                 오늘의 셋리스트 - {setlist.items.length}곡
