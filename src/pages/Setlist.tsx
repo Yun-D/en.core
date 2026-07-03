@@ -4,6 +4,8 @@ import { useTagStore } from "../store/useTagStore";
 import { useSongStore } from "../store/useSongStore";
 import { useSetlistStore } from "../store/useSetlistStore";
 import type { SetlistMode } from "../store/useSetlistStore";
+import { TagChip } from "../components/TagChip";
+import { useTagSelection } from "../hooks/useTagSelection";
 
 const STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 오래된 셋리스트로 판단하는 기준(6시간)
 
@@ -11,7 +13,8 @@ const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
   const [isEditingCount, setIsEditingCount] = useState(false); // 곡 수 직접 입력 모드 토글
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+
+  const { selectedTagIds, handleToggleTag } = useTagSelection();
 
   const setlist = useSetlistStore((state) => state.setlist);
   const setSetlist = useSetlistStore((state) => state.setSetlist);
@@ -71,15 +74,6 @@ const Setlist = () => {
     });
   };
 
-  const handleToggleTag = (tagId: number) => {
-    setSelectedTagIds(
-      (prev) =>
-        prev.includes(tagId)
-          ? prev.filter((id) => id !== tagId) // 이미 있으면 제거
-          : [...prev, tagId], // 없으면 추가
-    );
-  };
-
   return (
     <div>
       <HeroSection
@@ -123,48 +117,22 @@ const Setlist = () => {
       {/* 태그 */}
       <div className="flex flex-col gap-2 mt-4">
         <p className="text-xs text-(--color-text-placeholder)">태그 (선택)</p>
-        <div className="flex gap-2 flex-wrap">
-          {tags
-            .filter((tag) => tag.category === "mood")
-            .map((tag) => {
-              const active = selectedTagIds.includes(tag.id);
 
-              return (
-                <button
+        {(["mood", "situation"] as const).map((category) => (
+          <div key={category} className="flex gap-2 flex-wrap">
+            {tags
+              .filter((tag) => tag.category === category)
+              .map((tag) => (
+                <TagChip
                   key={tag.id}
-                  className={`cursor-pointer rounded-full border px-2 py-1 text-xs border-(--tag-mood-border) ${
-                    active
-                      ? "bg-(--tag-mood-hover-bg) text-(--tag-mood-hover-text)"
-                      : "bg-(--tag-mood-bg) text-(--tag-mood-text) hover:bg-(--tag-mood-hover-bg) hover:text-(--tag-mood-hover-text)"
-                  }`}
+                  label={tag.label}
+                  category={category}
+                  active={selectedTagIds.includes(tag.id)}
                   onClick={() => handleToggleTag(tag.id)}
-                >
-                  {tag.label}
-                </button>
-              );
-            })}
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          {tags
-            .filter((tag) => tag.category === "situation")
-            .map((tag) => {
-              const active = selectedTagIds.includes(tag.id);
-
-              return (
-                <button
-                  key={tag.id}
-                  className={`cursor-pointer rounded-full border px-2 py-1 text-xs border-(--tag-situation-border) ${
-                    active
-                      ? "bg-(--tag-situation-hover-bg) text-(--tag-situation-hover-text)"
-                      : "bg-(--tag-situation-bg) text-(--tag-situation-text) hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)"
-                  }`}
-                  onClick={() => handleToggleTag(tag.id)}
-                >
-                  {tag.label}
-                </button>
-              );
-            })}
-        </div>
+                />
+              ))}
+          </div>
+        ))}
 
         {/* 곡 수 */}
         <div className="flex justify-between items-center gap-2 mt-4 mb-2">
