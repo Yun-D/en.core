@@ -184,7 +184,7 @@ const Setlist = () => {
                 autoFocus
                 onBlur={(e) => {
                   const n = parseInt(e.target.value, 10);
-                  if (!isNaN(n) && n >= 1) setCount(n);
+                  if (!isNaN(n) && n >= 1) setCount(Math.min(n, songs.length));
                   setIsEditingCount(false);
                 }}
                 className="w-11 bg-transparent text-center text-[15px] font-medium"
@@ -192,14 +192,14 @@ const Setlist = () => {
             ) : (
               <button
                 onClick={() => setIsEditingCount(true)}
-                className="min-w-11 border-b border-dashed border-white/25 pb-0.5 text-center text-[15px] font-medium"
+                className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
               >
                 {count}곡
               </button>
             )}
 
             <button
-              onClick={() => setCount((c) => c + 1)}
+              onClick={() => setCount((c) => Math.min(songs.length, c + 1))}
               className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
             >
               <i className="ti ti-plus text-sm" />
