@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export const useTagSelection = () => {
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+export const useTagSelection = (initialTagIds: number[] = []) => {
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>(initialTagIds);
 
   const handleToggleTag = (tagId: number) => {
     setSelectedTagIds(

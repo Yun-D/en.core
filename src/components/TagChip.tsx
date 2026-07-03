@@ -24,7 +24,7 @@ export const TagChip = ({ label, category, active, onClick }: TagChipProps) => {
   return (
     <button
       onClick={onClick}
-      className={`cursor-pointer rounded-full border px-2 py-1 text-xs ${
+      className={`cursor-pointer rounded-full border px-2 py-1 text-xs transition-colors ${
         active ? styles.active : styles.base
       }`}
     >
