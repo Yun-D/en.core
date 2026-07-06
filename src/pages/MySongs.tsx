@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
 import StickyHeader from "../components/StickyHeader";
-import EmptySongs from "./EmptySongs";
+import EmptySongs from "../components/EmptySongs";
 import { useTagStore } from "../store/useTagStore";
 import AddSongDrawer from "../components/AddSongDrawer";
 import { useSongStore } from "../store/useSongStore";
