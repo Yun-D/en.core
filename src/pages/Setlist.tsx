@@ -138,145 +138,148 @@ const Setlist = () => {
         />
       </div>
 
-      {/* 태그 */}
-      <div className="flex flex-col gap-2 mt-4">
-        <p className="text-xs text-(--color-text-placeholder)">태그 (선택)</p>
+      {mode === "random" && (
+        // 태그
+        <div className="flex flex-col gap-2 mt-4">
+          <p className="text-xs text-(--color-text-placeholder)">태그 (선택)</p>
 
-        {(["mood", "situation"] as const).map((category) => (
-          <div key={category} className="flex gap-2 flex-wrap">
-            {tags
-              .filter((tag) => tag.category === category)
-              .map((tag) => (
-                <TagChip
-                  key={tag.id}
-                  label={tag.label}
-                  category={category}
-                  active={selectedTagIds.includes(tag.id)}
-                  onClick={() => handleToggleTag(tag.id)}
-                />
-              ))}
-          </div>
-        ))}
+          {(["mood", "situation"] as const).map((category) => (
+            <div key={category} className="flex gap-2 flex-wrap">
+              {tags
+                .filter((tag) => tag.category === category)
+                .map((tag) => (
+                  <TagChip
+                    key={tag.id}
+                    label={tag.label}
+                    category={category}
+                    active={selectedTagIds.includes(tag.id)}
+                    onClick={() => handleToggleTag(tag.id)}
+                  />
+                ))}
+            </div>
+          ))}
 
-        {/* 곡 수 */}
-        <div className="flex justify-between items-center gap-2 mt-4 mb-2">
-          <p className="text-xs text-(--color-text-placeholder)">곡 수</p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCount((c) => Math.max(1, c - 1))}
-              className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
-            >
-              <i className="ti ti-minus text-sm" />
-            </button>
-
-            {isEditingCount ? (
-              <input
-                type="number"
-                defaultValue={count}
-                autoFocus
-                onBlur={(e) => {
-                  const n = parseInt(e.target.value, 10);
-                  if (!isNaN(n) && n >= 1) setCount(Math.min(n, songs.length));
-                  setIsEditingCount(false);
-                }}
-                className="w-11 bg-transparent text-center text-[15px] font-medium"
-              />
-            ) : (
+          {/* 곡 수 */}
+          <div className="flex justify-between items-center gap-2 mt-4 mb-2">
+            <p className="text-xs text-(--color-text-placeholder)">곡 수</p>
+            <div className="flex items-center gap-2">
               <button
-                onClick={() => setIsEditingCount(true)}
-                className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
+                onClick={() => setCount((c) => Math.max(1, c - 1))}
+                className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
               >
-                {count}곡
+                <i className="ti ti-minus text-sm" />
               </button>
-            )}
 
-            <button
-              onClick={() => setCount((c) => Math.min(songs.length, c + 1))}
-              className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
-            >
-              <i className="ti ti-plus text-sm" />
-            </button>
+              {isEditingCount ? (
+                <input
+                  type="number"
+                  defaultValue={count}
+                  autoFocus
+                  onBlur={(e) => {
+                    const n = parseInt(e.target.value, 10);
+                    if (!isNaN(n) && n >= 1)
+                      setCount(Math.min(n, songs.length));
+                    setIsEditingCount(false);
+                  }}
+                  className="w-11 bg-transparent text-center text-[15px] font-medium"
+                />
+              ) : (
+                <button
+                  onClick={() => setIsEditingCount(true)}
+                  className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
+                >
+                  {count}곡
+                </button>
+              )}
+
+              <button
+                onClick={() => setCount((c) => Math.min(songs.length, c + 1))}
+                className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
+              >
+                <i className="ti ti-plus text-sm" />
+              </button>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* 뽑기, 다시 뽑기 버튼 */}
-        {/* random 모드 : 랜덤 뽑기 // choose 모드 : 선택 드로어 열기 */}
-        <button
-          onClick={mode === "choose" ? handleOpenSelectPicker : handleDraw}
-          className="cursor-pointer w-full rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
-          transition-colors duration-200 px-5 py-2 text-sm font-semibold"
-        >
-          <i
-            className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
-          />
-          {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
-        </button>
+      {/* 뽑기, 다시 뽑기 버튼 */}
+      {/* random 모드 : 랜덤 뽑기 // choose 모드 : 선택 드로어 열기 */}
+      <button
+        onClick={mode === "choose" ? handleOpenSelectPicker : handleDraw}
+        className="cursor-pointer w-full rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
+          transition-colors duration-200 px-5 py-2 text-sm font-semibold mt-4"
+      >
+        <i
+          className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
+        />
+        {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
+      </button>
 
-        {hasResult && setlist && (
-          <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
-            <div className="mb-2 flex items-center justify-between">
-              <p className="text-xs text-(--color-text-placeholder)">
-                오늘의 셋리스트 - {setlist.items.length}곡
-              </p>
-              <p className="text-xs text-(--color-text-placeholder)">
-                {formatRelativeTime(setlist.createdAt)}
-              </p>
-            </div>
+      {hasResult && setlist && (
+        <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
+          <div className="mb-2 flex items-center justify-between">
+            <p className="text-xs text-(--color-text-placeholder)">
+              오늘의 셋리스트 - {setlist.items.length}곡
+            </p>
+            <p className="text-xs text-(--color-text-placeholder)">
+              {formatRelativeTime(setlist.createdAt)}
+            </p>
+          </div>
 
-            <div className="flex flex-col gap-2">
-              {setlist.items.map((song, i) => (
-                <div
-                  key={song.id}
-                  className="flex flex-col bg-(--color-surface) rounded-lg p-3 gap-2"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="min-w-4 text-sm font-semibold text-(--tag-key-text)">
-                      {i + 1}
-                    </span>
+          <div className="flex flex-col gap-2">
+            {setlist.items.map((song, i) => (
+              <div
+                key={song.id}
+                className="flex flex-col bg-(--color-surface) rounded-lg p-3 gap-2"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="min-w-4 text-sm font-semibold text-(--tag-key-text)">
+                    {i + 1}
+                  </span>
 
-                    <div className="flex-1">
-                      <p className="text-sm">{song.title}</p>
-                      <div className="flex flex-row text-xs text-(--color-text-secondary) mt-0.5">
-                        <p className="mr-2">{song.artist}</p>
-                        <span>
-                          {song.number_tj
-                            ? `| TJ ${song.number_tj}`
-                            : song.number_ky
-                              ? `| KY ${song.number_ky}`
-                              : ""}
-                        </span>
-                      </div>
+                  <div className="flex-1">
+                    <p className="text-sm">{song.title}</p>
+                    <div className="flex flex-row text-xs text-(--color-text-secondary) mt-0.5">
+                      <p className="mr-2">{song.artist}</p>
+                      <span>
+                        {song.number_tj
+                          ? `| TJ ${song.number_tj}`
+                          : song.number_ky
+                            ? `| KY ${song.number_ky}`
+                            : ""}
+                      </span>
                     </div>
                   </div>
-
-                  {song.tags.length > 0 && (
-                    <div className="flex flex-wrap justify-end gap-1">
-                      {song.tags.map((tagId) => {
-                        const tag = tags.find((t) => t.id === tagId);
-                        if (!tag) return null;
-                        const colorClass =
-                          tag.category === "mood"
-                            ? "bg-(--tag-mood-bg) text-(--tag-mood-text)"
-                            : tag.category === "situation"
-                              ? "bg-(--tag-situation-bg) text-(--tag-situation-text)"
-                              : "bg-(--color-surface-elevated) text-(--color-text-secondary)";
-                        return (
-                          <span
-                            key={tagId}
-                            className={`rounded-full px-2 py-0.5 text-[11px] ${colorClass}`}
-                          >
-                            {tag.label}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
                 </div>
-              ))}
-            </div>
+
+                {song.tags.length > 0 && (
+                  <div className="flex flex-wrap justify-end gap-1">
+                    {song.tags.map((tagId) => {
+                      const tag = tags.find((t) => t.id === tagId);
+                      if (!tag) return null;
+                      const colorClass =
+                        tag.category === "mood"
+                          ? "bg-(--tag-mood-bg) text-(--tag-mood-text)"
+                          : tag.category === "situation"
+                            ? "bg-(--tag-situation-bg) text-(--tag-situation-text)"
+                            : "bg-(--color-surface-elevated) text-(--color-text-secondary)";
+                      return (
+                        <span
+                          key={tagId}
+                          className={`rounded-full px-2 py-0.5 text-[11px] ${colorClass}`}
+                        >
+                          {tag.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
