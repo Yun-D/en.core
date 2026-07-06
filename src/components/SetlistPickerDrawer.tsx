@@ -18,9 +18,16 @@ const SetlistPickerDrawer = ({
 }: SetlistPickerDrawerProps) => {
   const songs = useSongStore((state) => state.songs);
 
+  // 선택된 곡 id들(배열 순서가 셋리스트 순서)
   const [selectedIds, setSelectedIds] = useState<number[]>(
-    initialSelectedIds ?? [],
-  ); // 선택된 곡 id들(배열 순서가 셋리스트 순서)
+    initialSelectedIds ?? [], // 부모쪽에서 매번 리마운트 하므로 열릴때마다 새로 반영됨!
+  );
+
+  // 기존 곡을 불러왔는지 여부(이어서 하기)
+  // 열릴 때 초기 선택이 있으면 true + 상단 안내 배너 표시
+  const [showContinueBanner, setShowContinueBanner] = useState(
+    (initialSelectedIds ?? []).length > 0,
+  );
 
   // 곡 선택/해제 토글 함수
   const handleToggle = (songId: number) => {
@@ -30,6 +37,12 @@ const SetlistPickerDrawer = ({
           ? prev.filter((id) => id !== songId) // 선택 해제(빼기)
           : [...prev, songId], // 선택 추가(뒤에 붙이기)
     );
+  };
+
+  // 셋리스트 비우기
+  const handleClearSelection = () => {
+    setSelectedIds([]);
+    setShowContinueBanner(false); // 안내 배너 숨기기
   };
 
   // 확인 버튼 클릭 시 선택된 곡들을 부모(Setlist)에게 전달
@@ -50,6 +63,27 @@ const SetlistPickerDrawer = ({
           {selectedIds.length}곡 선택됨
         </span>
       </div>
+
+      {/* 이어서 안내 배너 ---------- */}
+      {showContinueBanner && (
+        <div
+          className="flex items-center justify-between rounded-lg 
+        border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 px-3 py-2 mb-2"
+        >
+          <span className="text-xs text-white/80">
+            기존 {selectedIds.length}곡을 불러왔어요.
+          </span>
+          <button
+            onClick={handleClearSelection}
+            className="cursor-pointer text-xs text-white/90 font-semibold 
+            underline underline-offset-2
+            hover:text-(--tag-key-text) transition-colors duration-200"
+          >
+            새로 만들기
+          </button>
+        </div>
+      )}
+      {/* ------------------------ */}
 
       <div
         className="flex flex-col gap-1.5 max-h-[50vh] overflow-y-auto
