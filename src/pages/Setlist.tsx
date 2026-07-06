@@ -6,6 +6,7 @@ import { useSetlistStore } from "../store/useSetlistStore";
 import type { SetlistMode } from "../store/useSetlistStore";
 import { TagChip } from "../components/TagChip";
 import { useTagSelection } from "../hooks/useTagSelection";
+import SetlistPickerDrawer from "../components/SetlistPickerDrawer";
 
 const STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 오래된 셋리스트로 판단하는 기준(6시간)
 
@@ -13,6 +14,9 @@ const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
   const [isEditingCount, setIsEditingCount] = useState(false); // 곡 수 직접 입력 모드 토글
+
+  const [isPickerOpen, setIsPickerOpen] = useState(false); // 선택모드 드로어 열림 상태
+  const [pickerKey, setPickerKey] = useState(0);
 
   const { selectedTagIds, handleToggleTag } = useTagSelection();
 
@@ -49,7 +53,10 @@ const Setlist = () => {
 
   // -------------------------------------------------------------------------
   // 선택모드 드로어 열기
-  const handleOpenSelectPicker = () => {};
+  const handleOpenSelectPicker = () => {
+    setPickerKey((prev) => prev + 1); // 드로어가 열릴 때마다 key를 바꿔서 새로 렌더링되도록 강제
+    setIsPickerOpen(true);
+  };
 
   // 랜덤모드 뽑기, 다시 뽑기
   const handleDraw = () => {
@@ -96,6 +103,23 @@ const Setlist = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {isPickerOpen && (
+        <SetlistPickerDrawer
+          key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
+          isOpen={isPickerOpen}
+          onClose={() => setIsPickerOpen(false)}
+          onConfirm={(songs) => {
+            setSetlist({
+              items: songs,
+              mode,
+              createdAt: Date.now(),
+            });
+            setIsPickerOpen(false);
+          }}
+          initialSelectedIds={setlist?.items.map((song) => song.id)}
+        />
       )}
 
       <p className="text-xs text-(--color-text-placeholder)">뽑는 방식</p>
