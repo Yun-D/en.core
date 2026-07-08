@@ -27,7 +27,7 @@ const Drawer = ({ isOpen, onClose, children }: DrawerProps) => {
 
       {/* 드로어 본체*/}
       <div
-        className="fixed bottom-0 left-0 right-0 z-50 max-w-107.5 mx-auto bg-(--color-navbar) 
+        className="fixed bottom-0 left-0 right-0 z-300 max-w-107.5 mx-auto bg-(--color-navbar) 
         rounded-t-2xl px-5 pb-15 flex flex-col gap-3 pt-2"
       >
         {/* 핸들 */}
