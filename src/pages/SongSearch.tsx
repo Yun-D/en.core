@@ -13,6 +13,7 @@ const SongSearch = () => {
   const [results, setResults] = useState<SearchResult[]>([]); // 검색 결과 상태
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isSearched, setIsSearched] = useState(false); // 검색 여부 상태 (검색 결과 없을 때를 위해..)
+  const [isError, setIsError] = useState(false); // 에러 상태
 
   const { isAdded, handleAddSong } = useSongActions(brand);
 
@@ -20,6 +21,7 @@ const SongSearch = () => {
     if (!query.trim()) return;
     setIsLoading(true);
     setIsSearched(true);
+    setIsError(false);
 
     try {
       const [titleRes, singerRes] = await Promise.all([
@@ -52,6 +54,8 @@ const SongSearch = () => {
 
       setResults(sortedResults);
     } catch (error) {
+      setIsError(true);
+      setResults([]);
       console.error("검색 실패: ", error);
     } finally {
       setIsLoading(false);
@@ -167,7 +171,7 @@ const SongSearch = () => {
         )}
 
         {/* 검색 결과 없음 ------------------------------------------------*/}
-        {!isLoading && isSearched && results.length === 0 && (
+        {!isLoading && !isError && isSearched && results.length === 0 && (
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
               <i className="ti ti-search text-xl mb-0.5" />
@@ -177,6 +181,20 @@ const SongSearch = () => {
               <br />
               찾는 곡이 없다면 다른 표기로 검색해보세요 <br />
               (한글 ↔ 영어 또는 제목 ↔ 가수 검색)
+            </p>
+          </div>
+        )}
+
+        {/* 검색 실패 ------------------------------------------------*/}
+        {!isLoading && isError && (
+          <div className="flex flex-col items-center justify-center min-h-[40vh]">
+            <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
+              <i className="ti ti-alert-triangle text-xl mb-0.5" />
+            </div>
+            <p className="text-sm text-(--color-text-placeholder) mt-2 text-center">
+              검색 중 문제가 발생했어요. <br />
+              <br />
+              잠시 후 다시 시도해주세요.
             </p>
           </div>
         )}
