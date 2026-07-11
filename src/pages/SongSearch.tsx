@@ -15,7 +15,7 @@ const SongSearch = () => {
   const [isSearched, setIsSearched] = useState(false); // 검색 여부 상태 (검색 결과 없을 때를 위해..)
   const [isError, setIsError] = useState(false); // 에러 상태
 
-  const { isAdded, handleAddSong } = useSongActions(brand);
+  const { isAdded, handleAddSong } = useSongActions(brand); // 현재 검색 브랜드에 해당하는 곡 번호가 이미 저장된 곡 목록에 있는지 확인
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -27,10 +27,10 @@ const SongSearch = () => {
       const [titleRes, singerRes] = await Promise.all([
         fetch(
           `https://api.manana.kr/karaoke/song/${encodeURIComponent(query)}.json?brand=${brand}`,
-        ),
+        ), // 제목 검색 API
         fetch(
           `https://api.manana.kr/karaoke/singer/${encodeURIComponent(query)}.json?brand=${brand}`,
-        ),
+        ), // 가수 검색 API
       ]);
 
       const [titleData, singerData] = await Promise.all([
@@ -38,15 +38,20 @@ const SongSearch = () => {
         singerRes.json(),
       ]);
 
+      // 제목과 가수 검색 결과를 병합하고 중복 제거
       const merged = [...titleData, ...singerData];
       const uniqueResults = merged.filter(
-        (song: SearchResult, index: number, self: SearchResult[]) =>
-          self.findIndex((s) => s.no === song.no) === index,
+        (
+          song: SearchResult,
+          index: number,
+          self: SearchResult[], // song(현재 요소), index(현재 요소의 인덱스), self(원본 배열 전체)
+        ) => self.findIndex((s) => s.no === song.no) === index, // 두 번째 이후 등장하는 중복 요소는 제거하고 첫 번째 요소만 남김
       );
 
+      // 제목 검색 결과와 가수 검색 결과를 정렬하여 제목이 검색어를 포함하는 곡이 먼저 나오도록 함
       const sortedResults = uniqueResults.sort(
         (a: SearchResult, b: SearchResult) => {
-          const aMatch = a.title.includes(query) ? 0 : 1;
+          const aMatch = a.title.includes(query) ? 0 : 1; // 제목에 검색어가 포함되면 0, 아니면 1
           const bMatch = b.title.includes(query) ? 0 : 1;
           return aMatch - bMatch;
         },
