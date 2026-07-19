@@ -12,9 +12,9 @@ import type { TabKey } from "../components/BottomNavbar";
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
 
-type Props = {
+interface Props {
   onTabChange: (tab: TabKey) => void;
-};
+}
 
 const MySongs = ({ onTabChange }: Props) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리

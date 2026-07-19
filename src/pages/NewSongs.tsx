@@ -5,11 +5,11 @@ import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
 type NewSong = KaraokeAPISong & { brand: string; release: string };
 
-type Props = {
+interface NewSongsProps {
   brand?: BrandKey; // 기본값은 tj
-};
+}
 
-const NewSongs = ({ brand = "tj" }: Props) => {
+const NewSongs = ({ brand = "tj" }: NewSongsProps) => {
   const [songs, setSongs] = useState<NewSong[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

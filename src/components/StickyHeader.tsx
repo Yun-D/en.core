@@ -1,10 +1,10 @@
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useState, type RefObject, type ReactNode } from "react";
 
-type StickyHeaderProps = {
+interface StickyHeaderProps {
   title: string;
   preListRef: RefObject<HTMLDivElement | null>; // 곡 리스트가 나오기 전의 DOM 요소 ref 전달받음(기본값은 null도 가능하도록 설정)
-  children?: React.ReactNode; // 필터칩 등 추가 가능하도록 children 허용
-};
+  children?: ReactNode; // 필터칩 등 추가 가능하도록 children 허용
+}
 const StickyHeader = ({ title, preListRef, children }: StickyHeaderProps) => {
   const [isVisible, setIsVisible] = useState(false);
 

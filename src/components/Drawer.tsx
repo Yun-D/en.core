@@ -1,10 +1,10 @@
 import { useEffect, type ReactNode } from "react";
 
-type DrawerProps = {
+interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-};
+}
 
 const Drawer = ({ isOpen, onClose, children }: DrawerProps) => {
   useEffect(() => {

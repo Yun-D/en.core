@@ -1,13 +1,13 @@
 import { type BrandKey, type KaraokeAPISong } from "../type/api";
 
-type Props = {
+interface SongCardProps {
   song: KaraokeAPISong;
   brand: BrandKey;
   isAdded: boolean;
   onAdd: () => void;
-};
+}
 
-const SongCard = ({ song, brand, isAdded, onAdd }: Props) => {
+const SongCard = ({ song, brand, isAdded, onAdd }: SongCardProps) => {
   return (
     <div
       className="flex items-center gap-3 bg-(--color-surface) border border-(--color-surface-elevated) rounded-xl

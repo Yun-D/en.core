@@ -1,10 +1,10 @@
 import { type Song } from "../type/songs";
 import { useTagStore } from "../store/useTagStore";
 
-type SavedSongCardProps = {
+interface SavedSongCardProps {
   song: Song;
   onClick?: () => void;
-};
+}
 
 const SavedSongCard = ({ song, onClick }: SavedSongCardProps) => {
   const { tags } = useTagStore();

@@ -1,7 +1,7 @@
-type HeroSectionProps = {
+interface HeroSectionProps {
   title?: string;
   subtitle?: string;
-};
+}
 
 const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
   return (

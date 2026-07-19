@@ -1,7 +1,7 @@
-type EmptySongsProps = {
+interface EmptySongsProps {
   onSearchClick: () => void; // 검색 탭으로 이동하는 함수 받아오기
   onAddClick: () => void; // 직접 추가하기 함수 받아오기
-};
+}
 const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
   return (
     <div className="flex flex-col items-center text-center justify-center gap-3">
