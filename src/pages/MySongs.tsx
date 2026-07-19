@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import HeroSection from "../components/HeroSection";
 import StickyHeader from "../components/StickyHeader";
 import EmptySongs from "../components/EmptySongs";
@@ -12,11 +12,11 @@ import type { TabKey } from "../components/BottomNavbar";
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
 
-interface Props {
+interface MySongsProps {
   onTabChange: (tab: TabKey) => void;
 }
 
-const MySongs = ({ onTabChange }: Props) => {
+const MySongs = ({ onTabChange }: MySongsProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
   const [editingSong, setEditingSong] = useState<Song | null>(null);
 
@@ -27,6 +27,14 @@ const MySongs = ({ onTabChange }: Props) => {
   const songs = useSongStore((state) => state.songs); // 곡 스토어에서 곡 데이터 가져오기
 
   const isEmpty = songs.length === 0; // 저장된 곡이 없는지 여부 판단
+
+  // 선택된 태그에 맞는 곡만 필터링 (선택된 태그가 없으면 전체 곡 표시)
+  const filteredSongs = useMemo(() => {
+    if (selectedTagIds.length === 0) return songs;
+    return songs.filter((song) =>
+      selectedTagIds.every((tagId) => song.tags.includes(tagId)),
+    );
+  }, [songs, selectedTagIds]);
 
   useEffect(() => {
     document.body.style.overflow = isEmpty ? "hidden" : ""; // 곡이 없을 때는 스크롤 잠금, 있으면 해제
@@ -123,7 +131,7 @@ const MySongs = ({ onTabChange }: Props) => {
 
       {/* 곡리스트  ------------------------------------------------ */}
       <div className="flex flex-col gap-2 mt-3 ">
-        {songs.map((song) => (
+        {filteredSongs.map((song) => (
           <SavedSongCard
             key={song.id}
             song={song}
