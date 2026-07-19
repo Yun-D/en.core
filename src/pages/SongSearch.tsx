@@ -4,6 +4,7 @@ import SongCard from "../components/SongCard";
 import NewSongs from "./NewSongs";
 import { useSongActions } from "../hooks/useSongActions";
 import { type BrandKey, type KaraokeAPISong } from "../type/api";
+import { ModeButton } from "../components/ModeButton";
 
 type SearchResult = KaraokeAPISong & { brand: string };
 
@@ -73,44 +74,27 @@ const SongSearch = () => {
 
       <div className="flex flex-col gap-3">
         {/* 브랜드 선택 -------------------------------------------*/}
-        {/* FIXME: 리팩토링(버튼 컴포넌트로 변경하기) */}
         <div className="flex gap-2">
-          <button
+          <ModeButton
+            active={brand === "tj"}
+            icon="ti-microphone"
+            label="TJ 노래방"
             onClick={() => {
               setBrand("tj");
               setResults([]);
               setIsSearched(false);
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border
-            transition-colors ${
-              brand === "tj"
-                ? "text-(--color-accent) border-(--color-primary)"
-                : "text-(--color-text-placeholder) border-(--color-surface-elevated)"
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${brand === "tj" ? "bg-(--color-accent)" : "bg-(--color-surface-elevated)"}`}
-            />
-            TJ 노래방
-          </button>
-          <button
+          />
+          <ModeButton
+            active={brand === "kumyoung"}
+            icon="ti-microphone"
+            label="금영 노래방"
             onClick={() => {
               setBrand("kumyoung");
               setResults([]);
               setIsSearched(false);
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border
-              transition-colors ${
-                brand === "kumyoung"
-                  ? "text-(--color-accent) border-(--color-primary)"
-                  : "text-(--color-text-placeholder) border-(--color-surface-elevated)"
-              }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${brand === "kumyoung" ? "bg-(--color-accent)" : "bg-(--color-surface-elevated)"}`}
-            />
-            금영 노래방
-          </button>
+          />
         </div>
 
         {/* 검색창 ------------------------------------------------*/}
