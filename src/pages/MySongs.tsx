@@ -88,7 +88,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
         {/* 검색창 + 태그 영역 (곡이 없는 경우 비활성화) ------------------------------------------------ */}
         <div
-          className={` flex flex-col ${isEmpty ? "opacity-30 pointer-events-none" : ""}`}
+          className={`flex flex-col ${isEmpty ? "opacity-30 pointer-events-none" : ""}`}
         >
           {/* 검색창 */}
           <div

@@ -15,7 +15,10 @@ function App() {
   };
 
   return (
-    <div className="max-w-107.5 mx-auto min-h-screen bg-(--color-bg) px-5 pb-24 wrap-break-word overflow-hidden">
+    <div
+      className="max-w-107.5 mx-auto h-dvh bg-(--color-bg) px-5 pb-24 wrap-break-word overflow-y-auto
+    scrollbar-thin scrollbar-thumb-(--color-surface-elevated) scrollbar-track-transparent"
+    >
       {pages[activeTab]} {/* 동적 페이지 렌더링 */}
       <BottomNavbar active={activeTab} onChange={setActiveTab} />
     </div>
