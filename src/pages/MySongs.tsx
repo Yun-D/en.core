@@ -21,6 +21,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
   const [editingSong, setEditingSong] = useState<Song | null>(null);
 
   const { selectedTagIds, handleToggleTag } = useTagSelection(); // 태그 선택 상태와 토글 함수 가져오기
+  const [query, setQuery] = useState(""); // 검색어 상태 관리
 
   const preListRef = useRef<HTMLDivElement>(null); // 곡 리스트가 나오기 전의 DOM 요소 참조를 위한 ref 생성
   const tags = useTagStore((state) => state.tags); // 태그 스토어에서 태그 데이터 가져오기
@@ -35,6 +36,17 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
       selectedTagIds.every((tagId) => song.tags.includes(tagId)),
     );
   }, [songs, selectedTagIds]);
+
+  const searchedSongs = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return filteredSongs; // 검색어가 없으면 필터링된 곡 그대로 반환
+
+    return filteredSongs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(q) ||
+        song.artist.toLowerCase().includes(q),
+    );
+  }, [filteredSongs, query]);
 
   useEffect(() => {
     document.body.style.overflow = isEmpty ? "hidden" : ""; // 곡이 없을 때는 스크롤 잠금, 있으면 해제
@@ -88,6 +100,8 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               type="text"
               className="text-base outline-none w-full"
               placeholder="곡 제목이나 가수로 검색해보세요"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
 
@@ -131,7 +145,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
       {/* 곡리스트  ------------------------------------------------ */}
       <div className="flex flex-col gap-2 mt-3 ">
-        {filteredSongs.map((song) => (
+        {searchedSongs.map((song) => (
           <SavedSongCard
             key={song.id}
             song={song}
