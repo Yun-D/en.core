@@ -53,6 +53,10 @@ const Setlist = () => {
   const showStaleNotice = isStale && !noticeDismissed;
 
   // -------------------------------------------------------------------------
+  // 패널 컨트롤 관련 ------------------------------------------------------------
+  const [controlsExpended, setControlsExpended] = useState(!setlist); // 컨트롤 패널(모드, 태그, 곡 수) 펼쳐져있는지 여부
+  // -------------------------------------------------------------------------
+
   // 선택모드 드로어 열기
   const handleOpenSelectPicker = () => {
     setPickerKey((prev) => prev + 1); // 드로어가 열릴 때마다 key를 바꿔서 새로 렌더링되도록 강제
@@ -80,6 +84,8 @@ const Setlist = () => {
       mode,
       createdAt: Date.now(),
     });
+
+    setControlsExpended(false); // 뽑기 후 컨트롤 패널 접기
   };
 
   return (
@@ -89,120 +95,143 @@ const Setlist = () => {
         subtitle={"애창곡 중 랜덤 n곡! 오늘의 셋리스트는?"}
       />
 
-      {showStaleNotice && setlist && (
-        <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
-          <div className="flex justify-between items-center">
-            <p className="text-sm">
-              <i className="ti ti-history mr-2 text-(--tag-key-text)" />
-              {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
-            </p>
-            <button
-              onClick={() => setNoticeDismissed(true)}
-              className="cursor-pointer"
-            >
-              <i className="ti ti-x text-lg text-(--tag-key-text)" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {isPickerOpen && (
-        <SetlistPickerDrawer
-          key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
-          isOpen={isPickerOpen}
-          onClose={() => setIsPickerOpen(false)}
-          onConfirm={(songs) => {
-            setSetlist({
-              items: songs,
-              mode,
-              createdAt: Date.now(),
-            });
-            setIsPickerOpen(false);
-          }}
-          initialSelectedIds={setlist?.items.map((song) => song.id)}
-        />
-      )}
-
-      <p className="text-xs text-(--color-text-placeholder)">뽑는 방식</p>
-      <div className="flex flex-row items-center gap-2 mt-2">
-        <ModeButton
-          active={mode === "random"}
-          icon="ti ti-arrows-shuffle"
-          label="랜덤"
-          onClick={() => setMode("random")}
-        />
-        <ModeButton
-          active={mode === "choose"}
-          icon="ti ti-list-check"
-          label="선택"
-          onClick={() => setMode("choose")}
-        />
-      </div>
-
-      {mode === "random" && (
-        // 태그
-        <div className="flex flex-col gap-2 mt-4">
-          <p className="text-xs text-(--color-text-placeholder)">태그 (선택)</p>
-
-          {(["mood", "situation"] as const).map((category) => (
-            <div key={category} className="flex gap-2 flex-wrap">
-              {tags
-                .filter((tag) => tag.category === category)
-                .map((tag) => (
-                  <TagChip
-                    key={tag.id}
-                    label={tag.label}
-                    category={category}
-                    active={selectedTagIds.includes(tag.id)}
-                    onClick={() => handleToggleTag(tag.id)}
-                  />
-                ))}
-            </div>
-          ))}
-
-          {/* 곡 수 */}
-          <div className="flex justify-between items-center gap-2 mt-4 mb-2">
-            <p className="text-xs text-(--color-text-placeholder)">곡 수</p>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCount((c) => Math.max(1, c - 1))}
-                className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
-              >
-                <i className="ti ti-minus text-sm" />
-              </button>
-
-              {isEditingCount ? (
-                <input
-                  type="number"
-                  defaultValue={count}
-                  autoFocus
-                  onBlur={(e) => {
-                    const n = parseInt(e.target.value, 10);
-                    if (!isNaN(n) && n >= 1)
-                      setCount(Math.min(n, songs.length));
-                    setIsEditingCount(false);
-                  }}
-                  className="w-11 bg-transparent text-center text-[15px] font-medium"
-                />
-              ) : (
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out
+      ${controlsExpended ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      >
+        <div className="overflow-hidden">
+          {showStaleNotice && setlist && (
+            <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
+              <div className="flex justify-between items-center">
+                <p className="text-sm">
+                  <i className="ti ti-history mr-2 text-(--tag-key-text)" />
+                  {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
+                </p>
                 <button
-                  onClick={() => setIsEditingCount(true)}
-                  className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
+                  onClick={() => setNoticeDismissed(true)}
+                  className="cursor-pointer"
                 >
-                  {count}곡
+                  <i className="ti ti-x text-lg text-(--tag-key-text)" />
                 </button>
-              )}
-
-              <button
-                onClick={() => setCount((c) => Math.min(songs.length, c + 1))}
-                className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
-              >
-                <i className="ti ti-plus text-sm" />
-              </button>
+              </div>
             </div>
+          )}
+
+          {isPickerOpen && (
+            <SetlistPickerDrawer
+              key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
+              isOpen={isPickerOpen}
+              onClose={() => setIsPickerOpen(false)}
+              onConfirm={(songs) => {
+                setSetlist({
+                  items: songs,
+                  mode,
+                  createdAt: Date.now(),
+                });
+                setIsPickerOpen(false);
+              }}
+              initialSelectedIds={setlist?.items.map((song) => song.id)}
+            />
+          )}
+
+          <p className="text-xs text-(--color-text-placeholder)">뽑는 방식</p>
+          <div className="flex flex-row items-center gap-2 mt-2">
+            <ModeButton
+              active={mode === "random"}
+              icon="ti ti-arrows-shuffle"
+              label="랜덤"
+              onClick={() => setMode("random")}
+            />
+            <ModeButton
+              active={mode === "choose"}
+              icon="ti ti-list-check"
+              label="선택"
+              onClick={() => setMode("choose")}
+            />
           </div>
+
+          {mode === "random" && (
+            // 태그
+            <div className="flex flex-col gap-2 mt-4">
+              <p className="text-xs text-(--color-text-placeholder)">
+                태그 (선택)
+              </p>
+
+              {(["mood", "situation"] as const).map((category) => (
+                <div key={category} className="flex gap-2 flex-wrap">
+                  {tags
+                    .filter((tag) => tag.category === category)
+                    .map((tag) => (
+                      <TagChip
+                        key={tag.id}
+                        label={tag.label}
+                        category={category}
+                        active={selectedTagIds.includes(tag.id)}
+                        onClick={() => handleToggleTag(tag.id)}
+                      />
+                    ))}
+                </div>
+              ))}
+
+              {/* 곡 수 */}
+              <div className="flex justify-between items-center gap-2 mt-4 mb-2">
+                <p className="text-xs text-(--color-text-placeholder)">곡 수</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCount((c) => Math.max(1, c - 1))}
+                    className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
+                  >
+                    <i className="ti ti-minus text-sm" />
+                  </button>
+
+                  {isEditingCount ? (
+                    <input
+                      type="number"
+                      defaultValue={count}
+                      autoFocus
+                      onBlur={(e) => {
+                        const n = parseInt(e.target.value, 10);
+                        if (!isNaN(n) && n >= 1)
+                          setCount(Math.min(n, songs.length));
+                        setIsEditingCount(false);
+                      }}
+                      className="w-11 bg-transparent text-center text-[15px] font-medium"
+                    />
+                  ) : (
+                    <button
+                      onClick={() => setIsEditingCount(true)}
+                      className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
+                    >
+                      {count}곡
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() =>
+                      setCount((c) => Math.min(songs.length, c + 1))
+                    }
+                    className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
+                  >
+                    <i className="ti ti-plus text-sm" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* 컨트롤 패널 접기/펼치기 버튼 */}
+        {!controlsExpended && (
+          <button
+            onClick={() => setControlsExpended(true)}
+            className="cursor-pointer px-3 py-2"
+          >
+            <span className="text-xs text-(--color-text-secondary)">
+              패널 열기
+            </span>
+          </button>
+        )}
+      </div>
 
       {/* 뽑기, 다시 뽑기 버튼 */}
       {/* random 모드 : 랜덤 뽑기 // choose 모드 : 선택 드로어 열기 */}
@@ -217,6 +246,7 @@ const Setlist = () => {
         {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
       </button>
 
+      {/* 셋리스트 출력 ---------------------------------------------------------------------------------------------- */}
       {hasResult && setlist && (
         <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
           <div className="mb-2 flex items-center justify-between">
@@ -228,10 +258,15 @@ const Setlist = () => {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2">
+          {/* key가 바뀌면 애니메이션이 다시 재생하게끔! */}
+          <div className="flex flex-col gap-2" key={setlist.createdAt}>
             {setlist.items.map((song, i) => (
               <div
                 key={song.id}
+                style={{
+                  animation: "card-in 0.4s ease-out both", // 카드가 아래에서 위로 올라오면서 나타나는 애니메이션. both : 딜레이동안 from상태 유지
+                  animationDelay: `${i * 80}ms`,
+                }}
                 className="flex flex-col bg-(--color-surface) rounded-lg p-3 gap-2"
               >
                 <div className="flex items-center gap-3">
