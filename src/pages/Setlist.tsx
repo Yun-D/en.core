@@ -95,28 +95,28 @@ const Setlist = () => {
         subtitle={"애창곡 중 랜덤 n곡! 오늘의 셋리스트는?"}
       />
 
+      {showStaleNotice && setlist && (
+        <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
+          <div className="flex justify-between items-center">
+            <p className="text-sm">
+              <i className="ti ti-history mr-2 text-(--tag-key-text)" />
+              {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
+            </p>
+            <button
+              onClick={() => setNoticeDismissed(true)}
+              className="cursor-pointer"
+            >
+              <i className="ti ti-x text-lg text-(--tag-key-text)" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div
         className={`grid transition-[grid-template-rows] duration-300 ease-out
       ${controlsExpended ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          {showStaleNotice && setlist && (
-            <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
-              <div className="flex justify-between items-center">
-                <p className="text-sm">
-                  <i className="ti ti-history mr-2 text-(--tag-key-text)" />
-                  {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
-                </p>
-                <button
-                  onClick={() => setNoticeDismissed(true)}
-                  className="cursor-pointer"
-                >
-                  <i className="ti ti-x text-lg text-(--tag-key-text)" />
-                </button>
-              </div>
-            </div>
-          )}
-
           {isPickerOpen && (
             <SetlistPickerDrawer
               key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
