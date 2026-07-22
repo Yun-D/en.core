@@ -8,6 +8,7 @@ import { TagChip } from "../components/TagChip";
 import { useTagSelection } from "../hooks/useTagSelection";
 import SetlistPickerDrawer from "../components/SetlistPickerDrawer";
 import { ModeButton } from "../components/ModeButton";
+import ReceiptDrawer from "../components/ReceiptDrawer";
 
 const STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 오래된 셋리스트로 판단하는 기준(6시간)
 
@@ -15,9 +16,6 @@ const Setlist = () => {
   const [mode, setMode] = useState<SetlistMode>("random");
   const [count, setCount] = useState(5);
   const [isEditingCount, setIsEditingCount] = useState(false); // 곡 수 직접 입력 모드 토글
-
-  const [isPickerOpen, setIsPickerOpen] = useState(false); // 선택모드 드로어 열림 상태
-  const [pickerKey, setPickerKey] = useState(0);
 
   const { selectedTagIds, handleToggleTag } = useTagSelection();
 
@@ -53,9 +51,13 @@ const Setlist = () => {
   const showStaleNotice = isStale && !noticeDismissed;
 
   // -------------------------------------------------------------------------
+
   // 패널 컨트롤 관련 ------------------------------------------------------------
   const [controlsExpended, setControlsExpended] = useState(!setlist); // 컨트롤 패널(모드, 태그, 곡 수) 펼쳐져있는지 여부
   // -------------------------------------------------------------------------
+
+  const [isPickerOpen, setIsPickerOpen] = useState(false); // 선택모드 드로어 열림 상태
+  const [pickerKey, setPickerKey] = useState(0);
 
   // 선택모드 드로어 열기
   const handleOpenSelectPicker = () => {
@@ -88,6 +90,10 @@ const Setlist = () => {
     setControlsExpended(false); // 뽑기 후 컨트롤 패널 접기
   };
 
+  // 영수증 만들기 ------------------------------------------------------------
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false); // 영수증 만들기 열림 상태
+  const handleOpenMakeReceipt = () => {};
+
   return (
     <div>
       <HeroSection
@@ -112,28 +118,37 @@ const Setlist = () => {
         </div>
       )}
 
+      {/* 드로어 모음 ------------------------------------------------------- */}
+      {isPickerOpen && (
+        <SetlistPickerDrawer
+          key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
+          isOpen={isPickerOpen}
+          onClose={() => setIsPickerOpen(false)}
+          onConfirm={(songs) => {
+            setSetlist({
+              items: songs,
+              mode,
+              createdAt: Date.now(),
+            });
+            setIsPickerOpen(false);
+          }}
+          initialSelectedIds={setlist?.items.map((song) => song.id)}
+        />
+      )}
+
+      {isReceiptOpen && (
+        <ReceiptDrawer
+          isOpen={isReceiptOpen}
+          onClose={() => setIsReceiptOpen(false)}
+        />
+      )}
+      {/* ----------------------------------------------------------------- */}
+
       <div
         className={`grid transition-[grid-template-rows] duration-300 ease-out
       ${controlsExpended ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          {isPickerOpen && (
-            <SetlistPickerDrawer
-              key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
-              isOpen={isPickerOpen}
-              onClose={() => setIsPickerOpen(false)}
-              onConfirm={(songs) => {
-                setSetlist({
-                  items: songs,
-                  mode,
-                  createdAt: Date.now(),
-                });
-                setIsPickerOpen(false);
-              }}
-              initialSelectedIds={setlist?.items.map((song) => song.id)}
-            />
-          )}
-
           <p className="text-xs text-(--color-text-placeholder)">뽑는 방식</p>
           <div className="flex flex-row items-center gap-2 mt-2">
             <ModeButton
@@ -224,27 +239,41 @@ const Setlist = () => {
         {!controlsExpended && (
           <button
             onClick={() => setControlsExpended(true)}
-            className="cursor-pointer px-3 py-2"
+            className="cursor-pointer px-1 py-1 flex items-center gap-3"
           >
+            <span className="h-px flex-1 bg-(--color-text-placeholder)" />
             <span className="text-xs text-(--color-text-secondary)">
               패널 열기
             </span>
+            <span className="h-px flex-1 bg-(--color-text-placeholder)" />
           </button>
         )}
       </div>
 
       {/* 뽑기, 다시 뽑기 버튼 */}
       {/* random 모드 : 랜덤 뽑기 // choose 모드 : 선택 드로어 열기 */}
-      <button
-        onClick={mode === "choose" ? handleOpenSelectPicker : handleDraw}
-        className="cursor-pointer w-full rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
-          transition-colors duration-200 px-5 py-2 text-sm font-semibold mt-4"
-      >
-        <i
-          className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
-        />
-        {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
-      </button>
+      <div className="flex-row flex gap-2 pt-4">
+        <button
+          onClick={mode === "choose" ? handleOpenSelectPicker : handleDraw}
+          className="cursor-pointer w-full rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
+          transition-colors duration-200 px-5 py-2 text-sm font-semibold"
+        >
+          <i
+            className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
+          />
+          {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
+        </button>
+        {hasResult && (
+          <button
+            onClick={handleOpenMakeReceipt}
+            className="cursor-pointer w-full rounded-xl bg-(--tag-key-border) hover:bg-(--tag-key-text)/70
+      transition-colors duration-200 px-5 py-2 text-sm font-semibold"
+          >
+            <i className="ti ti-receipt text-[15px] mr-2" />
+            영수증 만들기
+          </button>
+        )}
+      </div>
 
       {/* 셋리스트 출력 ---------------------------------------------------------------------------------------------- */}
       {hasResult && setlist && (
