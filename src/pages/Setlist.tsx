@@ -57,11 +57,9 @@ const Setlist = () => {
   // -------------------------------------------------------------------------
 
   const [isPickerOpen, setIsPickerOpen] = useState(false); // 선택모드 드로어 열림 상태
-  const [pickerKey, setPickerKey] = useState(0);
 
   // 선택모드 드로어 열기
   const handleOpenSelectPicker = () => {
-    setPickerKey((prev) => prev + 1); // 드로어가 열릴 때마다 key를 바꿔서 새로 렌더링되도록 강제
     setIsPickerOpen(true);
   };
 
@@ -121,7 +119,6 @@ const Setlist = () => {
       {/* 드로어 모음 ------------------------------------------------------- */}
       {isPickerOpen && (
         <SetlistPickerDrawer
-          key={pickerKey} // pickerKey를 key로 줘서 드로어가 열릴 때마다 새로 렌더링되도록 강제
           isOpen={isPickerOpen}
           onClose={() => setIsPickerOpen(false)}
           onConfirm={(songs) => {
