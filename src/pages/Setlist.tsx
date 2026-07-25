@@ -90,7 +90,6 @@ const Setlist = () => {
 
   // 영수증 만들기 ------------------------------------------------------------
   const [isReceiptOpen, setIsReceiptOpen] = useState(false); // 영수증 만들기 열림 상태
-  const handleOpenMakeReceipt = () => {};
 
   return (
     <div>
@@ -133,10 +132,11 @@ const Setlist = () => {
         />
       )}
 
-      {isReceiptOpen && (
+      {isReceiptOpen && setlist && (
         <ReceiptDrawer
           isOpen={isReceiptOpen}
           onClose={() => setIsReceiptOpen(false)}
+          setlist={setlist}
         />
       )}
       {/* ----------------------------------------------------------------- */}
@@ -262,7 +262,7 @@ const Setlist = () => {
         </button>
         {hasResult && (
           <button
-            onClick={handleOpenMakeReceipt}
+            onClick={() => setIsReceiptOpen(true)}
             className="cursor-pointer w-full rounded-xl bg-(--tag-key-border) hover:bg-(--tag-key-text)/70
       transition-colors duration-200 px-5 py-2 text-sm font-semibold"
           >
