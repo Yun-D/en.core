@@ -1,7 +1,8 @@
 import Drawer from "./Drawer";
 import type { Setlist } from "../store/useSetlistStore";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { formatDateTimeLocal } from "../utils/time";
+import ReceiptPreview from "./ReceiptPreview";
 
 interface ReceiptDrawerProps {
   isOpen: boolean;
@@ -23,6 +24,9 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
   };
 
   const [singers, setSingers] = useState<string>("");
+
+  const receiptRef = useRef<HTMLDivElement>(null); // 이미지로 캡처할 DOM 요소를 가리킬 ref
+  const [isSaving, setIsSaving] = useState(false);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
@@ -82,7 +86,7 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
                 <button
                   key={song.id}
                   onClick={() => handleToggleMvp(song.id)}
-                  aria-pressed={isMvp}
+                  aria-pressed={isMvp} // 눌린 상태 접근성 알림
                   aria-label={`${song.title}을 오늘의 MVP로 지정`}
                   className="cursor-pointer flex items-center gap-3 px-4 py-3 text-left"
                 >
@@ -108,13 +112,45 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
             onClick={() => setStep("preview")}
             className="cursor-pointer w-full h-10 mt-2 mb-2 rounded-xl bg-(--color-accent) 
             hover:bg-(--color-accent-hover) transition-colors duration-200 
-            px-5 py-2 text-sm font-semibold text-white"
+            px-5 py-2 text-sm font-semibold"
           >
             영수증 만들기
           </button>
         </>
       ) : (
-        <></>
+        <>
+          <div
+            className="flex justify-center items-start max-h-[55vh] overflow-y-auto
+        crollbar-thin scrollbar-thumb-(--color-surface-elevated) scrollbar-track-transparent"
+          >
+            <ReceiptPreview
+              songs={setlist.items}
+              singers={singers}
+              enteredAt={enteredAt}
+              mvpId={mvpId}
+              innerRef={receiptRef}
+            />
+          </div>
+
+          <button
+            //onClick={handleSave}
+            disabled={isSaving}
+            className="cursor-pointer w-full h-10 mt-2 rounded-xl bg-(--color-accent) 
+            hover:bg-(--color-accent-hover) transition-colors duration-200 
+            px-5 py-2 text-sm font-semibold text-white
+            disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {isSaving ? "저장 중..." : "이미지 저장하기"}
+          </button>
+
+          <button
+            onClick={() => setStep("form")}
+            className="cursor-pointer w-full h-10 rounded-xl bg-(--color-surface) 
+            text-white/70 hover:text-white transition-colors duration-200 px-5 py-2 text-sm"
+          >
+            수정하기
+          </button>
+        </>
       )}
     </Drawer>
   );
