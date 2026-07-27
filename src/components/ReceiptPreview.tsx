@@ -111,7 +111,7 @@ const Row = ({
 
 const Divider = ({ bold }: { bold?: boolean }) => (
   <div
-    className="my-4"
+    className="my-3"
     style={{ borderTop: `${bold ? 2 : 1}px dashed #C9C5BC` }}
   />
 );

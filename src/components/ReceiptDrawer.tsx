@@ -3,6 +3,7 @@ import type { Setlist } from "../store/useSetlistStore";
 import { useRef, useState } from "react";
 import { formatDateTimeLocal } from "../utils/time";
 import ReceiptPreview from "./ReceiptPreview";
+import { saveReceiptImage } from "../utils/saveReceiptImage";
 
 interface ReceiptDrawerProps {
   isOpen: boolean;
@@ -27,6 +28,19 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
 
   const receiptRef = useRef<HTMLDivElement>(null); // 이미지로 캡처할 DOM 요소를 가리킬 ref
   const [isSaving, setIsSaving] = useState(false);
+  const handleSave = async () => {
+    if (!receiptRef.current || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      await saveReceiptImage(receiptRef.current, `encore-${Date.now()}.png`);
+    } catch (error) {
+      console.error(error);
+      alert("이미지를 만들지 못했어요. 다시 시도해주세요.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
@@ -133,7 +147,7 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
           </div>
 
           <button
-            //onClick={handleSave}
+            onClick={handleSave}
             disabled={isSaving}
             className="cursor-pointer w-full h-10 mt-2 rounded-xl bg-(--color-accent) 
             hover:bg-(--color-accent-hover) transition-colors duration-200 
