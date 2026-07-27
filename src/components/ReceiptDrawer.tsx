@@ -83,7 +83,7 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
               type="text"
               value={singers}
               onChange={(e) => setSingers(e.target.value)}
-              className="cursor-pointer bg-transparent text-sm min-w-49 
+              className="cursor-pointer bg-transparent text-sm min-w-40 
               border-b border-dashed border-(--color-text-placeholder) pb-0.5"
             />
           </div>
