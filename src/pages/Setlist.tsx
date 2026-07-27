@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import HeroSection from "../components/HeroSection";
+
 import { useTagStore } from "../store/useTagStore";
 import { useSongStore } from "../store/useSongStore";
 import { useSetlistStore } from "../store/useSetlistStore";
 import type { SetlistMode } from "../store/useSetlistStore";
-import { TagChip } from "../components/TagChip";
 import { useTagSelection } from "../hooks/useTagSelection";
+
+import { TagChip } from "../components/TagChip";
 import SetlistPickerDrawer from "../components/SetlistPickerDrawer";
 import { ModeButton } from "../components/ModeButton";
 import ReceiptDrawer from "../components/ReceiptDrawer";
 import SetlistResult from "../components/SetlistResult";
+
+import { formatRelativeTime } from "../utils/time";
 
 const STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 오래된 셋리스트로 판단하는 기준(6시간)
 
@@ -34,15 +38,6 @@ const Setlist = () => {
 
   const tags = useTagStore((state) => state.tags);
   const songs = useSongStore((state) => state.songs);
-
-  // 타임스탬프를 방금, n분전, n시간 전으로 변환
-  const formatRelativeTime = (timestamp: number) => {
-    const diffMin = Math.floor((now - timestamp) / 1000 / 60);
-
-    if (diffMin < 1) return "방금";
-    if (diffMin < 60) return `${diffMin}분 전`;
-    return `${Math.floor(diffMin / 60)}시간 전`;
-  };
 
   // 저장된 셋리스트가 6시간보다 오래됐는지 확인
   const isStale = setlist !== null && now - setlist.createdAt > STALE_THRESHOLD;
@@ -104,7 +99,7 @@ const Setlist = () => {
           <div className="flex justify-between items-center">
             <p className="text-sm">
               <i className="ti ti-history mr-2 text-(--tag-key-text)" />
-              {formatRelativeTime(setlist.createdAt)}에 만든 셋리스트예요.
+              {formatRelativeTime(setlist.createdAt, now)}에 만든 셋리스트예요.
             </p>
             <button
               onClick={() => setNoticeDismissed(true)}
@@ -275,11 +270,7 @@ const Setlist = () => {
 
       {/* 셋리스트 출력 ---------------------------------------------------------------------------------------------- */}
       {hasResult && setlist && (
-        <SetlistResult
-          setlist={setlist}
-          tags={tags}
-          formatRelativeTime={formatRelativeTime}
-        />
+        <SetlistResult setlist={setlist} tags={tags} now={now} />
       )}
     </div>
   );

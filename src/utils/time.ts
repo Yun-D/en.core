@@ -27,3 +27,12 @@ export const formatDate = (ms: number) => {
   const dayOfWeek = WEEKDAYS[date.getDay()];
   return `${year}-${month}-${day} (${dayOfWeek})`;
 };
+
+// 타임스탬프를 방금, n분전, n시간 전으로 변환
+export const formatRelativeTime = (timestamp: number, now: number) => {
+  const diffMin = Math.floor((now - timestamp) / 1000 / 60);
+
+  if (diffMin < 1) return "방금";
+  if (diffMin < 60) return `${diffMin}분 전`;
+  return `${Math.floor(diffMin / 60)}시간 전`;
+};

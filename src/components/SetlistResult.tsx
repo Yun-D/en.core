@@ -1,17 +1,14 @@
 import type { Setlist } from "../store/useSetlistStore";
 import type { Tag } from "../type/tags";
+import { formatRelativeTime } from "../utils/time";
 
 interface SetlistResultProps {
   setlist: Setlist;
   tags: Tag[];
-  formatRelativeTime: (timestamp: number) => string;
+  now: number;
 }
 
-const SetlistResult = ({
-  setlist,
-  tags,
-  formatRelativeTime,
-}: SetlistResultProps) => {
+const SetlistResult = ({ setlist, tags, now }: SetlistResultProps) => {
   return (
     <div className="mt-4 border-t border-dashed border-(--color-surface-elevated) pt-4">
       <div className="mb-2 flex items-center justify-between">
@@ -19,7 +16,7 @@ const SetlistResult = ({
           오늘의 셋리스트 - {setlist.items.length}곡
         </p>
         <p className="text-xs text-(--color-text-placeholder)">
-          {formatRelativeTime(setlist.createdAt)}
+          {formatRelativeTime(setlist.createdAt, now)}
         </p>
       </div>
 
