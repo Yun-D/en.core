@@ -11,13 +11,15 @@ import type { TabKey } from "../components/BottomNavbar";
 
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
+import BackupDrawer from "../components/BackupDrawer";
 
 interface MySongsProps {
   onTabChange: (tab: TabKey) => void;
 }
 
 const MySongs = ({ onTabChange }: MySongsProps) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
+  const [isAddSongOpen, setIsAddSongOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
+  const [isBackupOpen, setIsBackupOpen] = useState(false); // 백업 드로어 열림 상태 관리
   const [editingSong, setEditingSong] = useState<Song | null>(null);
 
   const { selectedTagIds, handleToggleTag } = useTagSelection(); // 태그 선택 상태와 토글 함수 가져오기
@@ -60,12 +62,12 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
   };
   const handleAddClick = () => {
     setEditingSong(null); // 곡 추가모드
-    setIsDrawerOpen(true);
+    setIsAddSongOpen(true);
   };
 
   const handleEditClick = (song: Song) => {
     setEditingSong(song); // 수정모드
-    setIsDrawerOpen(true);
+    setIsAddSongOpen(true);
   };
 
   return (
@@ -74,12 +76,21 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
         <HeroSection
           title="나의 애창곡"
           subtitle={`내 애창곡 ${songs.length} · 나중에 부를 곡 ${songs.filter((song) => song.isLater).length}`}
+          action={
+            <button
+              onClick={() => setIsBackupOpen(true)}
+              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full
+            active:bg-(--color-surface-hover)"
+            >
+              <i className="ti ti-dots" />
+            </button>
+          }
         />
 
         <StickyHeader title="나의 애창곡" preListRef={preListRef}>
           <button
             onClick={handleAddClick}
-            className="flex items-center gap-1 text-sm text-(--color-text-primary) 
+            className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-primary) 
             border border-(--color-text-primary) rounded-lg px-3 py-1"
           >
             <i className="ti ti-plus text-xs" />곡 추가
@@ -135,7 +146,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
             <span className="text-base">나의 애창곡</span>
             <button
               onClick={handleAddClick}
-              className="flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
+              className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
               <i className="ti ti-plus text-xs" />곡 추가
             </button>
@@ -165,9 +176,14 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
       <AddSongDrawer
         key={editingSong?.id ?? "new"} // key가 바뀌면 새로 마운트되어 useState 초기값 다시 계산됨(추가 모드의 경우 'new', 수정 모드의 경우 각 곡의 id가 key가 됨)
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        isOpen={isAddSongOpen}
+        onClose={() => setIsAddSongOpen(false)}
         editSong={editingSong}
+      />
+
+      <BackupDrawer
+        isOpen={isBackupOpen}
+        onClose={() => setIsBackupOpen(false)}
       />
     </div>
   );
