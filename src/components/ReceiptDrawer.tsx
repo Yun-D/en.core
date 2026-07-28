@@ -83,7 +83,7 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
               type="text"
               value={singers}
               onChange={(e) => setSingers(e.target.value)}
-              className="cursor-pointer bg-transparent text-sm min-w-40 
+              className="cursor-pointer bg-transparent text-base min-w-40 
               border-b border-dashed border-(--color-text-placeholder) pb-0.5"
             />
           </div>
@@ -136,6 +136,10 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
           <div
             className="flex justify-center items-start max-h-[55vh] overflow-y-auto
         crollbar-thin scrollbar-thumb-(--color-surface-elevated) scrollbar-track-transparent"
+            style={{
+              animation:
+                "receipt-drop 0.5s cubic-bezier(0.34, 1.56, 0.67, 1) both",
+            }}
           >
             <ReceiptPreview
               songs={setlist.items}

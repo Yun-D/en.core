@@ -61,10 +61,24 @@ input[type="text"] {
   outline: none;
 }
 
+/* css animation ----------------------------------------------------- */
+/* 카드(차트) 올라오는 애니메이션 */
 @keyframes card-in {
   from {
     opacity: 0;
     transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 영수증 애니메이션 */
+@keyframes receipt-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
