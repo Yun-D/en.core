@@ -1,5 +1,6 @@
 import { useSongStore } from "../store/useSongStore";
 import { useTagStore } from "../store/useTagStore";
+import { exportSongs } from "../utils/backup";
 import Drawer from "./Drawer";
 
 interface BackupDrawerProps {
@@ -10,6 +11,10 @@ interface BackupDrawerProps {
 const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
   const tags = useTagStore((state) => state.tags);
   const songs = useSongStore((state) => state.songs);
+
+  const handleExport = () => {
+    exportSongs();
+  };
 
   if (!isOpen) return null;
   return (
@@ -25,6 +30,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         <button
           className="cursor-pointer w-full h-10 mt-2 mb-2 rounded-xl 
         bg-(--color-accent) hover:bg-(--color-accent-hover) transition-colors duration-200 px-5 py-2 text-sm font-semibold"
+          onClick={handleExport}
         >
           <i className="ti ti-download mr-2" />
           파일로 저장하기

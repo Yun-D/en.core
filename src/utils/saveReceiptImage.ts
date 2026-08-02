@@ -22,6 +22,8 @@ export const saveReceiptImage = async (node: HTMLElement, fileName: string) => {
   const dataUrl = await toPng(node, options); // toPng 반환 값 == 이미지 데이터를 텍스트(문자열)로 인코딩한 것
 
   const blob = await (await fetch(dataUrl)).blob(); // blob 형태로 다시 변환(navigator.share가 file 형태를 받아야 하기에)
+  // -> 안쪽 await으로 Response를 꺼내고 거기에 blob()을 붙여 -> 그 blob()이 준 Promise를 바깥 await으로 풀어내는 것
+  // Promise에 .blob()이 붙지 않도록 Response를 받아내고 나서 붙이는 것임!!
   const file = new File([blob], fileName, { type: "image/png" }); // file형태로 변환. 이게 파일명이 됨
 
   // 모바일에선 <a download>가 막히는 경우가 많아 네이티브 공유 시트(사진앱 저장, 카톡으로 보내기...) 먼저 시도함
@@ -41,4 +43,5 @@ export const saveReceiptImage = async (node: HTMLElement, fileName: string) => {
   link.href = dataUrl; // 이미지 url 넣고
   link.download = fileName; // 다운로드 속성으로 클릭하면 다운로드 되도록 지정한 뒤
   link.click(); // 코드가 대신 클릭하도록!
+  link.remove(); // 클릭 후엔 제거
 };
