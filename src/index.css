@@ -36,6 +36,11 @@
   /* 액센트 */
   --color-accent: #ff4d8d;
   --color-accent-hover: #f96ba0;
+
+  /* 위험요소 */
+  --color-danger: #ff4d4d;
+  --color-danger-hover: #ff6b6b;
+  --color-danger-text: #ff9ba6;
 }
 
 body {
