@@ -10,8 +10,8 @@ interface BackupDrawerProps {
 }
 
 // 복구(import) 단계 화면 상태들.
-// idle: 아무것도 안함, ready: 파일 선택됨, invaild: 파일이 유효하지 않음, done: 복구 완료
-type ImportPhase = "idle" | "ready" | "invaild" | "done";
+// idle: 아무것도 안함, ready: 파일 선택됨, invalid: 파일이 유효하지 않음, done: 복구 완료
+type ImportPhase = "idle" | "ready" | "invalid" | "done";
 
 interface ImportPreview {
   fileName: string;
@@ -30,7 +30,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
   const [importPreview, setImportPreview] = useState<ImportPreview | null>(
     null,
   );
-  const [errorMessage, setErrorMessage] = useState("");
+  //const [errorMessage, setErrorMessage] = useState("");
   const [importedCount, setImportedCount] = useState(0); // done 화면에 보여줄 불러온 곡 수
 
   const handleExport = () => {
@@ -57,7 +57,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
   const resetImportState = () => {
     setImportPhase("idle");
     setImportPreview(null);
-    setErrorMessage("");
+    //setErrorMessage("");
     setImportedCount(0);
 
     // 같은 파일을 다시 골라도 onChange 이벤트가 발생하도록 input.value 초기화
@@ -111,6 +111,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
           onChange={handleFileChange}
         />
 
+        {/* idle == 파일 선택 시 */}
         {importPhase === "idle" && (
           <button
             className="cflex items-center justify-center gap-2 rounded-xl border border-(--color-surface-elevated) 
@@ -122,6 +123,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
           </button>
         )}
 
+        {/* ready == 검증 통과 시 요약 및 덮어쓰기 경고 */}
         {importPhase === "ready" && importPreview && (
           <div className="flex flex-col gap-3 rounded-xl bg-(--color-surface-hover) p-4">
             <div>
@@ -135,7 +137,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
             </div>
 
             <div className="flex items-start gap-1.5 text-xs text-(--tag-situation-text)">
-              <i className="ti ti-alert-triangle text-base shrink-0" />
+              <i className="ti ti-alert-triangle text-base shrink-0 mr-1" />
               <span>
                 불러오면 지금 저장된 애창곡이 이 파일 내용으로 바뀌어요.
               </span>
@@ -157,6 +159,27 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
                 덮어쓰기
               </button>
             </div>
+          </div>
+        )}
+
+        {/* done == 복구 완료 시 완료 메시지 표시 */}
+        {importPhase === "done" && (
+          <div className="flex flex-col gap-3 rounded-xl bg-(--color-surface-hover) p-4">
+            <div className="flex items-start gap-0.5 text-xs">
+              <i className="ti ti-check text-lg shrink-0 mr-1" />
+              <span>
+                {importedCount}곡을 불러왔어요. 이제 애창곡 목록에서
+                확인해보세요.
+              </span>
+            </div>
+
+            <button
+              onClick={handleClose}
+              className="cursor-pointer self-end rounded-xl bg-(--color-accent) px-4 py-2.5 text-sm
+                    hover:bg-(--color-accent-hover) transition-colors duration-200"
+            >
+              완료
+            </button>
           </div>
         )}
       </section>
