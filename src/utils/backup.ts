@@ -99,3 +99,21 @@ export const isBackup = (value: unknown): value is ExportedData => {
     value.tags.every(isTag)
   );
 };
+
+export const readBackupFile = async (file: File): Promise<ExportedData> => {
+  const text = await file.text(); // UTF-8로 읽은 텍스트 문자열
+
+  let data: unknown;
+  try {
+    data = JSON.parse(text); // 문자열 -> 객체 파싱
+  } catch {
+    throw new Error("파일이 JSON 형식이 아니에요.");
+  }
+
+  // 이 if문을 통과하면 data는 ExportedData 타입으로 좁혀짐!
+  if (!isBackup(data)) {
+    throw new Error("앵콜 백업 파일이 아니에요.");
+  }
+
+  return data;
+};
