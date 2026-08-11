@@ -7,6 +7,7 @@ type SongStore = {
   addSong: (song: Omit<Song, "id">) => void; // id는 자동으로 생성되도록 Omit<Song, "id"> 사용
   removeSong: (id: number) => void;
   updateSong: (id: number, updated: Partial<Song>) => void; // 수정 시 바꾸고 싶은 필드만 전달할 수 있도록 Partial(?) 사용
+  setSongs: (songs: Song[]) => void; // 전체 곡 목록을 한 번에 바꾸는 메서드
 };
 
 export const useSongStore = create<SongStore>()(
@@ -36,6 +37,8 @@ export const useSongStore = create<SongStore>()(
             song.id === id ? { ...song, ...updated } : song,
           ),
         })),
+
+      setSongs: (songData) => set({ songs: songData }),
     }),
     { name: "song-store" }, // 로컬 스토리지에 "song-store"라는 키로 저장
   ),

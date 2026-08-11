@@ -1,6 +1,9 @@
 import { useSongStore } from "../store/useSongStore";
 import { useTagStore } from "../store/useTagStore";
 
+import { type Song } from "../type/songs";
+import { type Tag } from "../type/tags";
+
 /*
 1. store에서 백업할 songs, tags 가져오기
 2. 원본과 메타정보(백업 시점, 버전)를 묶기
@@ -43,4 +46,56 @@ export const exportSongs = () => {
 
   //7. 뒷정리: URL.revokeObjectURL()로 메모리 해제
   URL.revokeObjectURL(url);
+};
+
+//------------------------------------------------
+
+export type ExportedData = {
+  version: number;
+  exportedAt: string;
+  songs: Song[];
+  tags: Tag[];
+};
+
+// unknown을 '객체이긴 함~'까지 좁혀주는 타입가드
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null; // null도 object이므로 null 체크 필요
+
+const isSong = (value: unknown): value is Song => {
+  if (!isObject(value)) return false; // 객체인지 확인
+  return (
+    // Song 타입의 필수 속성들이 모두 존재하고 타입이 맞는지 확인
+    typeof value.id === "number" &&
+    typeof value.title === "string" &&
+    typeof value.artist === "string" &&
+    typeof value.song_key === "number" &&
+    typeof value.isLater === "boolean" &&
+    Array.isArray(value.tags) && // tags는 배열이어야 하고
+    value.tags.every((tag) => typeof tag === "number") // 배열 안의 모든 요소가 number여야 함
+  );
+};
+
+const isTag = (value: unknown): value is Tag => {
+  if (!isObject(value)) return false;
+  return (
+    typeof value.id === "number" &&
+    typeof value.label === "string" &&
+    typeof value.isDefault === "boolean" &&
+    // category는 정해진 세 값 중 하나
+    (value.category === "mood" ||
+      value.category === "situation" ||
+      value.category === "custom")
+  );
+};
+
+export const isBackup = (value: unknown): value is ExportedData => {
+  if (!isObject(value)) return false;
+  return (
+    typeof value.version === "number" &&
+    typeof value.exportedAt === "string" &&
+    Array.isArray(value.songs) &&
+    Array.isArray(value.tags) &&
+    value.songs.every(isSong) && // 모든 원소가 Song 타입인지 확인
+    value.tags.every(isTag)
+  );
 };

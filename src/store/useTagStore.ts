@@ -7,6 +7,7 @@ type TagStore = {
 
   addCustomTag: (label: string) => void;
   removeCustomTag: (id: number) => void;
+  setTags: (tags: Tag[]) => void; // 전체 태그 목록을 한 번에 바꾸는 메서드
 };
 
 export const useTagStore = create<TagStore>()(
@@ -30,6 +31,8 @@ export const useTagStore = create<TagStore>()(
         set((state) => ({
           tags: state.tags.filter((tag) => tag.id !== id),
         })),
+
+      setTags: (tagData) => set({ tags: tagData }),
     }),
     { name: "tag-store" }, // 로컬 스토리지에 "tag-store"라는 키로 저장
   ),
