@@ -9,7 +9,7 @@ export const AccentButton = ({
   onClick,
   icon,
   text,
-  disabled,
+  disabled = false,
 }: AccentButtonProps) => {
   return (
     <button
