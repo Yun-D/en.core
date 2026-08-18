@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { formatDateTimeLocal } from "../utils/time";
 import ReceiptPreview from "./ReceiptPreview";
 import { saveReceiptImage } from "../utils/saveReceiptImage";
+import { AccentButton } from "./AccentButton";
 
 interface ReceiptDrawerProps {
   isOpen: boolean;
@@ -122,14 +123,10 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
             })}
           </div>
 
-          <button
+          <AccentButton
             onClick={() => setStep("preview")}
-            className="cursor-pointer w-full h-10 mt-2 mb-2 rounded-xl bg-(--color-accent) 
-            hover:bg-(--color-accent-hover) transition-colors duration-200 
-            px-5 py-2 text-sm font-semibold"
-          >
-            영수증 만들기
-          </button>
+            text="영수증 만들기"
+          />
         </>
       ) : (
         <>
@@ -150,16 +147,11 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
             />
           </div>
 
-          <button
+          <AccentButton
             onClick={handleSave}
+            text={isSaving ? "저장 중..." : "이미지 저장하기"}
             disabled={isSaving}
-            className="cursor-pointer w-full h-10 mt-2 rounded-xl bg-(--color-accent) 
-            hover:bg-(--color-accent-hover) transition-colors duration-200 
-            px-5 py-2 text-sm font-semibold text-white
-            disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {isSaving ? "저장 중..." : "이미지 저장하기"}
-          </button>
+          />
 
           <button
             onClick={() => setStep("form")}

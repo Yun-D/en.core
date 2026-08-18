@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSongStore } from "../store/useSongStore";
 import { type Song } from "../type/songs";
 import Drawer from "./Drawer";
+import { AccentButton } from "./AccentButton";
 
 interface SetlistPickerDrawerProps {
   isOpen: boolean;
@@ -129,15 +130,11 @@ const SetlistPickerDrawer = ({
       </div>
 
       {/* 확정 버튼 ------- */}
-      <button
+      <AccentButton
         onClick={handleConfirm}
         disabled={selectedIds.length === 0}
-        className="cursor-pointer w-full h-10 mt-2 rounded-xl bg-(--color-accent) font-semibold text-white
-        hover:bg-(--color-accent-hover) transition-colors duration-200 px-5 py-2 text-sm mb-2
-        disabled:opacity-40 disabled:cursor-not-allowed"
-      >
-        이 곡들로 셋리스트 만들기
-      </button>
+        text="이 곡들로 셋리스트 만들기"
+      />
     </Drawer>
   );
 };

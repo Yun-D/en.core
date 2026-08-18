@@ -7,6 +7,7 @@ import { type Song } from "../type/songs";
 
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
+import { AccentButton } from "./AccentButton";
 
 interface AddSongDrawerProps {
   isOpen: boolean;
@@ -227,14 +228,11 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
       </div>
 
       {/* 저장 버튼 ---------------------------------------------------- */}
-      <button
+      <AccentButton
         onClick={handleSave}
         disabled={!title.trim() || !artist.trim()}
-        className="cursor-pointer w-full h-12 rounded-full bg-(--color-accent) text-white 
-          font-semibold text-sm disabled:opacity-40"
-      >
-        {editSong ? "수정" : "저장"}
-      </button>
+        text={editSong ? "수정" : "저장"}
+      />
     </Drawer>
   );
 };

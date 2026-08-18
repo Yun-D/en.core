@@ -7,6 +7,7 @@ import {
   type ExportedData,
 } from "../utils/backup";
 import Drawer from "./Drawer";
+import { AccentButton } from "./AccentButton";
 
 interface BackupDrawerProps {
   isOpen: boolean;
@@ -110,14 +111,12 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         <p className="text-sm text-(--color-text-secondary)">
           애창곡 {songs.length}곡 · 태그 {tags.length}개를 저장해요.
         </p>
-        <button
-          className="cursor-pointer w-full h-10 mt-2 mb-2 rounded-xl 
-        bg-(--color-accent) hover:bg-(--color-accent-hover) transition-colors duration-200 px-5 py-2 text-sm font-semibold"
+
+        <AccentButton
           onClick={handleExport}
-        >
-          <i className="ti ti-download mr-2" />
-          파일로 저장하기
-        </button>
+          icon="ti-download"
+          text="파일로 저장하기"
+        />
       </section>
 
       <hr className="border-(--color-surface-elevated)" />

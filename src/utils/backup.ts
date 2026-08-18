@@ -50,6 +50,14 @@ export const exportSongs = () => {
 
 //------------------------------------------------
 
+/*
+1. value가 타입이 객체임을 확인하고, 통과하면 문자열 키로 속성을 꺼낼 수 있는 객체로 다룬다.
+2. value가 Song / Tag 타입인지 확인한다. 해당 타입의 필수 속성이 다 있고, 타입이 맞는지 검사한다.
+3. isBackup() : 위 내용을 조합하여 value가 ExportedData 타입인지 확인한다.
+4. readBackupFile() : 반환값은 ExportedData 타입으로 좁혀진다. 
+   파일을 문자열로 읽어 JSON 파싱하여 isBackup()으로 타입 검증 후 반환한다.
+*/
+
 export type ExportedData = {
   version: number;
   exportedAt: string;
