@@ -24,6 +24,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
   const { selectedTagIds, handleToggleTag } = useTagSelection(); // 태그 선택 상태와 토글 함수 가져오기
   const [query, setQuery] = useState(""); // 검색어 상태 관리
+  const [onlyLater, setOnlyLater] = useState(false); // '나중에' 필터 여부 (song.isLater에서 파생되는 값이라 태그로 저장하지 않음)
 
   const preListRef = useRef<HTMLDivElement>(null); // 곡 리스트가 나오기 전의 DOM 요소 참조를 위한 ref 생성
   const tags = useTagStore((state) => state.tags); // 태그 스토어에서 태그 데이터 가져오기
@@ -33,11 +34,18 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
   // 선택된 태그에 맞는 곡만 필터링 (선택된 태그가 없으면 전체 곡 표시)
   const filteredSongs = useMemo(() => {
-    if (selectedTagIds.length === 0) return songs;
-    return songs.filter((song) =>
-      selectedTagIds.every((tagId) => song.tags.includes(tagId)),
-    );
-  }, [songs, selectedTagIds]);
+    let list = songs;
+
+    if (onlyLater) list = list.filter((song) => song.isLater); // '나중에' 칩이 켜져 있으면 나중에 부를 곡만
+
+    if (selectedTagIds.length > 0) {
+      list = list.filter((song) =>
+        selectedTagIds.every((tagId) => song.tags.includes(tagId)),
+      );
+    }
+
+    return list;
+  }, [songs, selectedTagIds, onlyLater]);
 
   const searchedSongs = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -136,6 +144,16 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
                           onClick={() => handleToggleTag(tag.id)}
                         />
                       ))}
+
+                    {/* '나중에'는 저장된 태그가 아니라 song.isLater에서 파생된 필터용 칩 */}
+                    {category === "situation" && (
+                      <TagChip
+                        label="나중에"
+                        category="situation"
+                        active={onlyLater}
+                        onClick={() => setOnlyLater((prev) => !prev)}
+                      />
+                    )}
                   </div>
                 </div>
               ))}

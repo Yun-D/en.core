@@ -34,6 +34,14 @@ export const useTagStore = create<TagStore>()(
 
       setTags: (tagData) => set({ tags: tagData }),
     }),
-    { name: "tag-store" }, // 로컬 스토리지에 "tag-store"라는 키로 저장
+    {
+      name: "tag-store", // 로컬 스토리지에 "tag-store"라는 키로 저장
+      version: 1, // DEFAULT_TAGS 수정 할 때마다 +1
+      migrate: (persisted) => {
+        const state = persisted as TagStore;
+        const customTags = state.tags.filter((tag) => !tag.isDefault); // 사용자 태그는 보존
+        return { ...state, tags: [...DEFAULT_TAGS, ...customTags] };
+      },
+    },
   ),
 );
