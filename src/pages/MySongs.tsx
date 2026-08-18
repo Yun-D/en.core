@@ -149,7 +149,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
                     {category === "situation" && (
                       <TagChip
                         label="나중에"
-                        category="situation"
+                        category="later"
                         active={onlyLater}
                         onClick={() => setOnlyLater((prev) => !prev)}
                       />

@@ -22,9 +22,11 @@
   --tag-mood-hover-text: #5d1d3e;
 
   /* 태그 — 키 (시안) */
-  --tag-key-bg: rgb(0 149 187 / 0.5); /* 0 42 56*/
-  --tag-key-text: #00e5ff; /* #66f9ff 좀 더 밝은 시안으로 할까.. */
+  --tag-key-bg: rgb(0 149 187 / 0.5);
+  --tag-key-text: #37d2e3;
   --tag-key-border: #0099bb;
+  --tag-key-hover-bg: #64d9dd;
+  --tag-key-hover-text: #032d36;
 
   /* 태그 — 상황 (노랑) */
   --tag-situation-bg: rgb(177 152 105 / 0.5);
@@ -32,6 +34,13 @@
   --tag-situation-border: #ffd47e;
   --tag-situation-hover-bg: #f8d056;
   --tag-situation-hover-text: #604b24;
+
+  /* 태그 — 커스텀 (연두) */
+  --tag-custom-bg: rgba(128, 206, 122, 0.5);
+  --tag-custom-text: #9de066;
+  --tag-custom-border: #61c013;
+  --tag-custom-hover-bg: #89c059;
+  --tag-custom-hover-text: #1c3a05;
 
   /* 액센트 */
   --color-accent: #ff4d8d;

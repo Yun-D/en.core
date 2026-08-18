@@ -1,6 +1,6 @@
 interface TagChipProps {
   label: string;
-  category: "mood" | "situation";
+  category: "mood" | "situation" | "later" | "custom";
   active?: boolean;
   onClick?: () => void;
 }
@@ -15,6 +15,16 @@ const TAG_CHIP_STYLES = {
     base: "border-(--tag-situation-border) bg-(--tag-situation-bg) text-(--tag-situation-text) hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)",
     active:
       "border-(--tag-situation-border) bg-(--tag-situation-hover-bg) text-(--tag-situation-hover-text)",
+  },
+  later: {
+    base: "border-(--tag-key-border) bg-(--tag-key-bg) text-(--tag-key-text) hover:bg-(--tag-key-hover-bg) hover:text-(--tag-key-hover-text)",
+    active:
+      "border-(--tag-key-border) bg-(--tag-key-hover-bg) text-(--tag-key-hover-text)",
+  },
+  custom: {
+    base: "border-(--tag-custom-border) bg-(--tag-custom-bg) text-(--tag-custom-text) hover:bg-(--tag-custom-hover-bg) hover:text-(--tag-custom-hover-text)",
+    active:
+      "border-(--tag-custom-border) bg-(--tag-custom-hover-bg) text-(--tag-custom-hover-text)",
   },
 } as const;
 
