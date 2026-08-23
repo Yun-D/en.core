@@ -1,5 +1,5 @@
 import type { Setlist } from "../store/useSetlistStore";
-import type { Tag } from "../type/tags";
+import { getTagChipCategory, type Tag } from "../type/tags";
 import { formatRelativeTime } from "../utils/time";
 
 interface SetlistResultProps {
@@ -56,12 +56,13 @@ const SetlistResult = ({ setlist, tags, now }: SetlistResultProps) => {
                 {song.tags.map((tagId) => {
                   const tag = tags.find((t) => t.id === tagId);
                   if (!tag) return null;
+                  const chipCategory = getTagChipCategory(tag);
                   const colorClass =
-                    tag.category === "mood"
+                    chipCategory === "mood"
                       ? "bg-(--tag-mood-bg) text-(--tag-mood-text)"
-                      : tag.category === "situation"
+                      : chipCategory === "situation"
                         ? "bg-(--tag-situation-bg) text-(--tag-situation-text)"
-                        : "bg-(--color-surface-elevated) text-(--color-text-secondary)";
+                        : "bg-(--tag-custom-bg) text-(--tag-custom-text)";
                   return (
                     <span
                       key={tagId}

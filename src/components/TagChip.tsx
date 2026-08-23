@@ -2,42 +2,56 @@ interface TagChipProps {
   label: string;
   category: "mood" | "situation" | "later" | "custom";
   active?: boolean;
+  readOnly?: boolean; // 선택 없이 보여주기만 할 때
   onClick?: () => void;
 }
 // category별 완성된 클래스 (Tailwind가 스캔할 수 있게 문자열 그대로 존재)
 const TAG_CHIP_STYLES = {
   mood: {
-    base: "border-(--tag-mood-border) bg-(--tag-mood-bg) text-(--tag-mood-text) hover:bg-(--tag-mood-hover-bg) hover:text-(--tag-mood-hover-text)",
+    base: "border-(--tag-mood-border) bg-(--tag-mood-bg) text-(--tag-mood-text)",
+    hover: "hover:bg-(--tag-mood-hover-bg) hover:text-(--tag-mood-hover-text)",
     active:
       "border-(--tag-mood-border) bg-(--tag-mood-hover-bg) text-(--tag-mood-hover-text)",
   },
   situation: {
-    base: "border-(--tag-situation-border) bg-(--tag-situation-bg) text-(--tag-situation-text) hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)",
+    base: "border-(--tag-situation-border) bg-(--tag-situation-bg) text-(--tag-situation-text)",
+    hover:
+      "hover:bg-(--tag-situation-hover-bg) hover:text-(--tag-situation-hover-text)",
     active:
       "border-(--tag-situation-border) bg-(--tag-situation-hover-bg) text-(--tag-situation-hover-text)",
   },
   later: {
-    base: "border-(--tag-key-border) bg-(--tag-key-bg) text-(--tag-key-text) hover:bg-(--tag-key-hover-bg) hover:text-(--tag-key-hover-text)",
+    base: "border-(--tag-key-border) bg-(--tag-key-bg) text-(--tag-key-text)",
+    hover: "hover:bg-(--tag-key-hover-bg) hover:text-(--tag-key-hover-text)",
     active:
       "border-(--tag-key-border) bg-(--tag-key-hover-bg) text-(--tag-key-hover-text)",
   },
   custom: {
-    base: "border-(--tag-custom-border) bg-(--tag-custom-bg) text-(--tag-custom-text) hover:bg-(--tag-custom-hover-bg) hover:text-(--tag-custom-hover-text)",
+    base: "border-(--tag-custom-border) bg-(--tag-custom-bg) text-(--tag-custom-text)",
+    hover:
+      "hover:bg-(--tag-custom-hover-bg) hover:text-(--tag-custom-hover-text)",
     active:
       "border-(--tag-custom-border) bg-(--tag-custom-hover-bg) text-(--tag-custom-hover-text)",
   },
 } as const;
 
-export const TagChip = ({ label, category, active, onClick }: TagChipProps) => {
+export const TagChip = ({
+  label,
+  category,
+  active,
+  readOnly,
+  onClick,
+}: TagChipProps) => {
   const styles = TAG_CHIP_STYLES[category];
 
+  const className = `rounded-full border px-2 py-1 text-xs transition-colors ${
+    active ? styles.active : styles.base
+  } ${readOnly ? "cursor-default" : `cursor-pointer ${styles.hover}`}`;
+
+  if (readOnly) return <span className={className}>{label}</span>;
+
   return (
-    <button
-      onClick={onClick}
-      className={`cursor-pointer rounded-full border px-2 py-1 text-xs transition-colors ${
-        active ? styles.active : styles.base
-      }`}
-    >
+    <button onClick={onClick} className={className}>
       {label}
     </button>
   );

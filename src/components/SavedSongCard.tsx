@@ -1,5 +1,15 @@
 import { type Song } from "../type/songs";
 import { useTagStore } from "../store/useTagStore";
+import { getTagChipCategory } from "../type/tags";
+
+// 칩 색상은 카테고리가 아니라 기본/사용자 여부를 따라감
+const TAG_COLORS = {
+  mood: "bg-(--tag-mood-bg) text-(--tag-mood-text) border-(--tag-mood-border)",
+  situation:
+    "bg-(--tag-situation-bg) text-(--tag-situation-text) border-(--tag-situation-border)",
+  custom:
+    "bg-(--tag-custom-bg) text-(--tag-custom-text) border-(--tag-custom-border)",
+} as const;
 
 interface SavedSongCardProps {
   song: Song;
@@ -73,20 +83,12 @@ const SavedSongCard = ({ song, onClick }: SavedSongCardProps) => {
         situTags.length > 0 ||
         song.song_key !== undefined) && (
         <div className="flex flex-wrap gap-1 mt-3">
-          {moodTags.map((tag) => (
+          {[...moodTags, ...situTags].map((tag) => (
             <span
               key={tag.id}
-              className="text-[11px] px-2 py-0.5 rounded-full border
-                        bg-(--tag-mood-bg) text-(--tag-mood-text) border-(--tag-mood-border)"
-            >
-              {tag.label}
-            </span>
-          ))}
-          {situTags.map((tag) => (
-            <span
-              key={tag.id}
-              className="text-[11px] px-2 py-0.5 rounded-full border
-                        bg-(--tag-situation-bg) text-(--tag-situation-text) border-(--tag-situation-border)"
+              className={`text-[11px] px-2 py-0.5 rounded-full border ${
+                TAG_COLORS[getTagChipCategory(tag)]
+              }`}
             >
               {tag.label}
             </span>
