@@ -7,6 +7,7 @@ import { type Song } from "../type/songs";
 
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
+import { getTagChipCategory } from "../type/tags";
 import { AccentButton } from "./AccentButton";
 
 interface AddSongDrawerProps {
@@ -196,7 +197,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
                     <TagChip
                       key={tag.id}
                       label={tag.label}
-                      category={category}
+                      category={getTagChipCategory(tag)}
                       active={selectedTagIds.includes(tag.id)}
                       onClick={() => handleToggleTag(tag.id)}
                     />

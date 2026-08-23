@@ -8,6 +8,7 @@ import type { SetlistMode } from "../store/useSetlistStore";
 import { useTagSelection } from "../hooks/useTagSelection";
 
 import { TagChip } from "../components/TagChip";
+import { getTagChipCategory } from "../type/tags";
 import SetlistPickerDrawer from "../components/SetlistPickerDrawer";
 import { ModeButton } from "../components/ModeButton";
 import ReceiptDrawer from "../components/ReceiptDrawer";
@@ -173,7 +174,7 @@ const Setlist = () => {
                       <TagChip
                         key={tag.id}
                         label={tag.label}
-                        category={category}
+                        category={getTagChipCategory(tag)}
                         active={selectedTagIds.includes(tag.id)}
                         onClick={() => handleToggleTag(tag.id)}
                       />
