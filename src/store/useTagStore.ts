@@ -36,23 +36,10 @@ export const useTagStore = create<TagStore>()(
     }),
     {
       name: "tag-store", // 로컬 스토리지에 "tag-store"라는 키로 저장
-      version: 2, // DEFAULT_TAGS 수정 할 때마다 +1
+      version: 2, // 태그 구조 바꾸거나 DEFAULT_TAGS 수정 할 때마다 +1
       migrate: (persisted) => {
-        // 예전 사용자 태그는 category가 "custom"이거나 group에 카테고리가 들어있음
-        const state = persisted as Omit<TagStore, "tags"> & {
-          tags: (Omit<Tag, "category"> & {
-            category: TagCategory | "custom";
-            group?: TagCategory;
-          })[];
-        };
-        const customTags: Tag[] = state.tags
-          .filter((tag) => !tag.isDefault)
-          .map(({ id, label, category, group }) => ({
-            id,
-            label,
-            category: category === "custom" ? (group ?? "mood") : category,
-            isDefault: false,
-          }));
+        const state = persisted as TagStore;
+        const customTags = state.tags.filter((tag) => !tag.isDefault); // 사용자 태그는 보존
         return { ...state, tags: [...DEFAULT_TAGS, ...customTags] };
       },
     },
