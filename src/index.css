@@ -42,6 +42,11 @@
   --tag-custom-hover-bg: #89c059;
   --tag-custom-hover-text: #1c3a05;
 
+  /* 태그 — 읽기 전용 (회색) */
+  --tag-readonly-bg: rgba(177, 169, 201, 0.3);
+  --tag-readonly-text: #a9a3ba;
+  --tag-readonly-border: #5f5b6c;
+
   /* 액센트 */
   --color-accent: #ff4d8d;
   --color-accent-hover: #f96ba0;

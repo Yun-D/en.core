@@ -5,7 +5,6 @@ interface TagChipProps {
   readOnly?: boolean; // 선택 없이 보여주기만 할 때
   onClick?: () => void;
 }
-// category별 완성된 클래스 (Tailwind가 스캔할 수 있게 문자열 그대로 존재)
 const TAG_CHIP_STYLES = {
   mood: {
     base: "border-(--tag-mood-border) bg-(--tag-mood-bg) text-(--tag-mood-text)",
@@ -35,6 +34,12 @@ const TAG_CHIP_STYLES = {
   },
 } as const;
 
+const TAG_CHIP_BASE = "rounded-full border px-2 py-1 text-xs transition-colors";
+
+// readOnly는 category와 무관한 상태라 별도 스타일
+const TAG_CHIP_READONLY =
+  "cursor-default border-(--tag-readonly-border) bg-(--tag-readonly-bg) text-(--tag-readonly-text)";
+
 export const TagChip = ({
   label,
   category,
@@ -42,16 +47,20 @@ export const TagChip = ({
   readOnly,
   onClick,
 }: TagChipProps) => {
+  if (readOnly)
+    return (
+      <span className={`${TAG_CHIP_BASE} ${TAG_CHIP_READONLY}`}>{label}</span>
+    );
+
   const styles = TAG_CHIP_STYLES[category];
 
-  const className = `rounded-full border px-2 py-1 text-xs transition-colors ${
-    active ? styles.active : styles.base
-  } ${readOnly ? "cursor-default" : `cursor-pointer ${styles.hover}`}`;
-
-  if (readOnly) return <span className={className}>{label}</span>;
-
   return (
-    <button onClick={onClick} className={className}>
+    <button
+      onClick={onClick}
+      className={`${TAG_CHIP_BASE} cursor-pointer ${
+        active ? styles.active : styles.base
+      } ${styles.hover}`}
+    >
       {label}
     </button>
   );
