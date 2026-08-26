@@ -15,11 +15,13 @@ function App() {
   };
 
   return (
-    <div
-      className="max-w-107.5 mx-auto h-dvh bg-(--color-bg) px-5 pb-24 wrap-break-word overflow-y-auto
+    <div className="flex max-w-107.5 flex-col mx-auto h-dvh bg-(--color-bg) wrap-break-word">
+      <main
+        className="flex-1 overflow-y-auto overscroll-contain px-5 pt-[env(safe-area-inset-top)]
     scrollbar-thin scrollbar-thumb-(--color-surface-elevated) scrollbar-track-transparent"
-    >
-      {pages[activeTab]} {/* 동적 페이지 렌더링 */}
+      >
+        {pages[activeTab]} {/* 동적 페이지 렌더링 */}
+      </main>
       <BottomNavbar active={activeTab} onChange={setActiveTab} />
     </div>
   );
