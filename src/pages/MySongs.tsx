@@ -11,7 +11,9 @@ import type { TabKey } from "../components/BottomNavbar";
 
 import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
+import { getTagChipCategory } from "../type/tags";
 import BackupDrawer from "../components/BackupDrawer";
+import TagDrawer from "../components/TagDrawer";
 
 interface MySongsProps {
   onTabChange: (tab: TabKey) => void;
@@ -20,6 +22,7 @@ interface MySongsProps {
 const MySongs = ({ onTabChange }: MySongsProps) => {
   const [isAddSongOpen, setIsAddSongOpen] = useState(false); // 곡 추가 드로어의 열림 상태 관리
   const [isBackupOpen, setIsBackupOpen] = useState(false); // 백업 드로어 열림 상태 관리
+  const [isAddTagOpen, setIsAddTagOpen] = useState(false);
   const [editingSong, setEditingSong] = useState<Song | null>(null);
 
   const { selectedTagIds, handleToggleTag } = useTagSelection(); // 태그 선택 상태와 토글 함수 가져오기
@@ -68,14 +71,18 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
   const handleSearchClick = () => {
     onTabChange("search"); // 검색 탭으로 이동
   };
-  const handleAddClick = () => {
+
+  const handleAddSong = () => {
     setEditingSong(null); // 곡 추가모드
     setIsAddSongOpen(true);
   };
-
-  const handleEditClick = (song: Song) => {
+  const handleEditSong = (song: Song) => {
     setEditingSong(song); // 수정모드
     setIsAddSongOpen(true);
+  };
+
+  const handleAddTag = () => {
+    setIsAddTagOpen(true);
   };
 
   return (
@@ -97,7 +104,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
 
         <StickyHeader title="나의 애창곡" preListRef={preListRef}>
           <button
-            onClick={handleAddClick}
+            onClick={handleAddSong}
             className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-primary) 
             border border-(--color-text-primary) rounded-lg px-3 py-1"
           >
@@ -125,45 +132,54 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
           </div>
 
           {/* 태그 */}
-          <div className="flex flex-col gap-2 mt-4">
-            <div className="flex flex-col gap-2 mt-4">
-              {(["mood", "situation"] as const).map((category) => (
-                <div key={category} className="flex flex-col gap-2">
-                  <p className="text-xs text-(--color-text-placeholder)">
-                    {category === "mood" ? "분위기" : "상황"}
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    {tags
-                      .filter((tag) => tag.category === category)
-                      .map((tag) => (
-                        <TagChip
-                          key={tag.id}
-                          label={tag.label}
-                          category={category}
-                          active={selectedTagIds.includes(tag.id)}
-                          onClick={() => handleToggleTag(tag.id)}
-                        />
-                      ))}
+          <div className="flex justify-between mt-4 items-center">
+            <span className="text-base">태그</span>
+            <button
+              onClick={handleAddTag}
+              className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
+            >
+              <i className="ti ti-settings text-xs" />
+              태그 관리
+            </button>
+          </div>
 
-                    {/* '나중에'는 저장된 태그가 아니라 song.isLater에서 파생된 필터용 칩 */}
-                    {category === "situation" && (
+          <div className="flex flex-col gap-2 mt-2">
+            {(["mood", "situation"] as const).map((category) => (
+              <div key={category} className="flex flex-col gap-2">
+                <p className="text-xs text-(--color-text-placeholder)">
+                  {category === "mood" ? "분위기" : "상황"}
+                </p>
+                <div className="flex gap-2 flex-wrap">
+                  {tags
+                    .filter((tag) => tag.category === category)
+                    .map((tag) => (
                       <TagChip
-                        label="나중에"
-                        category="later"
-                        active={onlyLater}
-                        onClick={() => setOnlyLater((prev) => !prev)}
+                        key={tag.id}
+                        label={tag.label}
+                        category={getTagChipCategory(tag)}
+                        active={selectedTagIds.includes(tag.id)}
+                        onClick={() => handleToggleTag(tag.id)}
                       />
-                    )}
-                  </div>
+                    ))}
+
+                  {/* '나중에'는 저장된 태그가 아니라 song.isLater에서 파생된 필터용 칩 */}
+                  {category === "situation" && (
+                    <TagChip
+                      label="나중에"
+                      category="later"
+                      active={onlyLater}
+                      onClick={() => setOnlyLater((prev) => !prev)}
+                    />
+                  )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
 
           <div className="flex justify-between mt-8 items-center">
             <span className="text-base">나의 애창곡</span>
             <button
-              onClick={handleAddClick}
+              onClick={handleAddSong}
               className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
               <i className="ti ti-plus text-xs" />곡 추가
@@ -178,7 +194,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
           <SavedSongCard
             key={song.id}
             song={song}
-            onClick={() => handleEditClick(song)}
+            onClick={() => handleEditSong(song)}
           />
         ))}
       </div>
@@ -187,7 +203,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
         <div className="fixed inset-0 z-40 flex items-center justify-center pb-20 pt-68">
           <EmptySongs
             onSearchClick={handleSearchClick}
-            onAddClick={handleAddClick}
+            onAddClick={handleAddSong}
           />
         </div>
       )}
@@ -203,6 +219,8 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}
       />
+
+      <TagDrawer isOpen={isAddTagOpen} onClose={() => setIsAddTagOpen(false)} />
     </div>
   );
 };
