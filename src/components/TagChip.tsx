@@ -4,6 +4,7 @@ interface TagChipProps {
   active?: boolean;
   readOnly?: boolean; // 선택 없이 보여주기만 할 때
   onClick?: () => void;
+  onDelete?: () => void;
 }
 const TAG_CHIP_STYLES = {
   mood: {
@@ -46,6 +47,7 @@ export const TagChip = ({
   active,
   readOnly,
   onClick,
+  onDelete,
 }: TagChipProps) => {
   if (readOnly)
     return (
@@ -53,13 +55,25 @@ export const TagChip = ({
     );
 
   const styles = TAG_CHIP_STYLES[category];
+  const colorStyles = `${active ? styles.active : styles.base}`;
+
+  // 삭제 가능한 칩
+  if (onDelete)
+    return (
+      <span
+        className={`${TAG_CHIP_BASE} ${colorStyles} inline-flex items-center gap-1`}
+      >
+        {label}
+        <button onClick={onDelete} className="cursor-pointer">
+          <i className="ti ti-x" />
+        </button>
+      </span>
+    );
 
   return (
     <button
       onClick={onClick}
-      className={`${TAG_CHIP_BASE} cursor-pointer ${
-        active ? styles.active : styles.base
-      } ${styles.hover}`}
+      className={`${TAG_CHIP_BASE} cursor-pointer ${colorStyles}`}
     >
       {label}
     </button>
