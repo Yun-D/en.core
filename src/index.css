@@ -57,6 +57,17 @@
   --color-danger-text: #ff9ba6;
 }
 
+/* 모드에 따른 height 분기(standalone 모드에서는 vh 단위 사용하도록 추가) */
+:root {
+  --app-height: 100dvh;
+}
+
+@media (display-mode: standalone) {
+  :root {
+    --app-height: 100vh;
+  }
+}
+
 body {
   background-color: var(--color-outer);
   color: var(--color-text-primary);

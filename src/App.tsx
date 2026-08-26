@@ -15,7 +15,10 @@ function App() {
   };
 
   return (
-    <div className="flex max-w-107.5 flex-col mx-auto h-dvh bg-(--color-bg) wrap-break-word">
+    <div
+      className="flex max-w-107.5 flex-col mx-auto bg-(--color-bg) wrap-break-word"
+      style={{ height: "var(--app-height)" }}
+    >
       <main
         className="flex-1 overflow-y-auto overscroll-contain px-5 pt-[env(safe-area-inset-top)]
     scrollbar-thin scrollbar-thumb-(--color-surface-elevated) scrollbar-track-transparent"
