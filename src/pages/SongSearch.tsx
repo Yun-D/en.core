@@ -121,6 +121,7 @@ const SongSearch = () => {
                 setResults([]);
                 setIsSearched(false);
               }}
+              aria-label="입력 내용 삭제"
               className="flex items-center"
             >
               <i className="ti ti-x text-(--color-text-placeholder) text-xs" />

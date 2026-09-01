@@ -94,6 +94,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
           action={
             <button
               onClick={() => setIsBackupOpen(true)}
+              aria-label="백업 및 복원 메뉴 버튼"
               className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full
             active:bg-(--color-surface-hover)"
             >
@@ -108,7 +109,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
             className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-primary) 
             border border-(--color-text-primary) rounded-lg px-3 py-1"
           >
-            <i className="ti ti-plus text-xs" />곡 추가
+            <i className="ti ti-plus text-xs" aria-hidden="true" />곡 추가
           </button>
         </StickyHeader>
 
@@ -138,7 +139,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               onClick={handleAddTag}
               className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
-              <i className="ti ti-settings text-xs" />
+              <i className="ti ti-settings text-xs" aria-hidden="true" />
               태그 관리
             </button>
           </div>
@@ -182,7 +183,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               onClick={handleAddSong}
               className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
-              <i className="ti ti-plus text-xs" />곡 추가
+              <i className="ti ti-plus text-xs" aria-hidden="true" />곡 추가
             </button>
           </div>
         </div>

@@ -144,7 +144,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         px-4 py-3 text-sm font-semibold active:bg-(--color-surface-hover)"
             onClick={() => fileInputRef.current?.click()}
           >
-            <i className="ti ti-upload mr-1" />
+            <i className="ti ti-upload mr-1" aria-hidden="true" />
             파일 선택하기
           </button>
         )}

@@ -23,7 +23,7 @@ const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
           bg-[#f472b590] hover:bg-[#e37fb3] transition-colors duration-200
           px-5 py-2 text-sm font-semibold rounded-full items-center flex"
         >
-          <i className="ti ti-search mr-2" />
+          <i className="ti ti-search mr-2" aria-hidden="true" />
           노래 검색하러 가기
         </button>
 

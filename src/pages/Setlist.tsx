@@ -104,6 +104,7 @@ const Setlist = () => {
             </p>
             <button
               onClick={() => setNoticeDismissed(true)}
+              aria-label="안내문 닫기"
               className="cursor-pointer"
             >
               <i className="ti ti-x text-lg text-(--tag-key-text)" />
@@ -188,6 +189,7 @@ const Setlist = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setCount((c) => Math.max(1, c - 1))}
+                    aria-label="곡 수 줄이기"
                     className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
                   >
                     <i className="ti ti-minus text-sm" />
@@ -209,6 +211,7 @@ const Setlist = () => {
                   ) : (
                     <button
                       onClick={() => setIsEditingCount(true)}
+                      aria-label="클릭하여 곡 수 변경"
                       className="min-w-11 border-b border-dashed border-(--color-accent)/80 pb-0.5 text-center text-[15px] font-medium"
                     >
                       {count}곡
@@ -219,6 +222,7 @@ const Setlist = () => {
                     onClick={() =>
                       setCount((c) => Math.min(songs.length, c + 1))
                     }
+                    aria-label="곡 수 더하기"
                     className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
                   >
                     <i className="ti ti-plus text-sm" />
@@ -254,6 +258,7 @@ const Setlist = () => {
         >
           <i
             className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
+            aria-hidden="true"
           />
           {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
         </button>
@@ -263,7 +268,7 @@ const Setlist = () => {
             className="cursor-pointer w-full rounded-xl bg-(--tag-key-border) hover:bg-(--tag-key-text)/70
       transition-colors duration-200 px-5 py-2 text-sm font-semibold"
           >
-            <i className="ti ti-receipt text-[15px] mr-2" />
+            <i className="ti ti-receipt text-[15px] mr-2" aria-hidden="true" />
             영수증 만들기
           </button>
         )}

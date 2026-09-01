@@ -96,15 +96,17 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
               ) : (
                 <button
                   onClick={() => setConfirmDelete(true)}
-                  className="text-(--color-text-placeholder) w-7 h-7"
+                  aria-label="삭제"
+                  className="cursor-pointertext-(--color-text-placeholder) w-7 h-7"
                 >
-                  <i className="ti ti-trash text-lg" aria-label="삭제" />
+                  <i className="ti ti-trash text-lg" aria-hidden="true" />
                 </button>
               ))}
           </div>
 
           <button
             onClick={onClose}
+            aria-label="닫기"
             className="cursor-pointer text-(--color-text-placeholder) mr-1"
           >
             <i className="ti ti-x text-xl" />
@@ -167,6 +169,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
         <label className="text-xs text-(--color-text-muted) flex-1">키</label>
         <button
           onClick={() => setSongKey((k) => k - 1)}
+          aria-label="키 낮추기"
           className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
         >
           <i className="ti ti-minus text-sm" />
@@ -176,6 +179,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
         </span>
         <button
           onClick={() => setSongKey((k) => k + 1)}
+          aria-label="키 높이기"
           className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
         >
           <i className="ti ti-plus text-sm" />
@@ -213,6 +217,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
         <label>나중에 부를 곡</label>
         <button
           onClick={() => setIsLater((v) => !v)}
+          aria-label="나중에 부를 곡 토글"
           className={`cursor-pointer w-11 h-6 rounded-full transition-colors relative 
               ${
                 isLater

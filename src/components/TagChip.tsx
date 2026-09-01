@@ -64,7 +64,7 @@ export const TagChip = ({
         className={`${TAG_CHIP_BASE} ${colorStyles} inline-flex items-center gap-1`}
       >
         {label}
-        <button onClick={onDelete} className="cursor-pointer">
+        <button onClick={onDelete} aria-label="삭제" className="cursor-pointer">
           <i className="ti ti-x" />
         </button>
       </span>

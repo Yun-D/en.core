@@ -112,7 +112,7 @@ const TagDrawer = ({ isOpen, onClose }: TagDrawerProps) => {
                       className="col-start-1 row-start-1 w-full bg-transparent min-w-0 focus:outline-none"
                     />
                   </span>
-                  <button onClick={handleCancelAdding}>
+                  <button aria-label="닫기" onClick={handleCancelAdding}>
                     <i className="ti ti-x" />
                   </button>
                 </div>

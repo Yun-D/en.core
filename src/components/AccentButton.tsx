@@ -20,7 +20,7 @@ export const AccentButton = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {icon && <i className={`ti ${icon} mr-2`} />}
+      {icon && <i className={`ti ${icon} mr-2`} aria-hidden="true" />}
       {text}
     </button>
   );

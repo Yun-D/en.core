@@ -51,7 +51,7 @@ const SongCard = ({ song, brand, isAdded, onAdd }: SongCardProps) => {
           className="cursor-pointer text-xs shrink-0 px-3 py-1.5 rounded-2xl flex items-center
           border-(--tag-mood-border) text-(--tag-mood-hover-text) bg-(--tag-mood-hover-bg)"
         >
-          <i className="ti ti-plus text-xs mr-1" />곡 추가
+          <i className="ti ti-plus text-xs mr-1" aria-hidden="true" />곡 추가
         </button>
       )}
     </div>
