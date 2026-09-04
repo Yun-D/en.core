@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import BottomNavbar, { type TabKey } from "./components/BottomNavbar";
 import MySongs from "./pages/MySongs";
 import SongSearch from "./pages/SongSearch";
@@ -26,6 +27,7 @@ function App() {
         {pages[activeTab]} {/* 동적 페이지 렌더링 */}
       </main>
       <BottomNavbar active={activeTab} onChange={setActiveTab} />
+      <Analytics />
     </div>
   );
 }
