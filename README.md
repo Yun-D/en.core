@@ -25,7 +25,7 @@
 - 곡 제목·가수로 검색하고, 분위기/상황 태그 필터, 나중에 부를 곡 필터로 조회 가능
 - 사용자 커스텀 태그 추가/삭제 기능
 - 저장된 곡이 없을 땐 검색 또는 직접 추가로 안내하는 빈 화면 표시
-- **데이터 백업/동기화** — JSON 파일로 백업하고 내보내기/가져오기
+- **데이터 백업/복원** — 저장된 곡, 태그를 JSON 파일로 내보내거나 복원 가능. localStorage는 브라우저 데이터를 지우면 함께 삭제되기에 이를 보완하고자 넣은 기능
 
 ### 🔍 노래방 검색
 
@@ -54,9 +54,10 @@
 | ---------------- | --------------------------------------------------------- |
 | **Language**     | TypeScript                                                |
 | **Framework**    | React 19                                                  |
-| **Build Tool**   | Vite                                                      |
-| **State**        | Zustand                                                   |
+| **Build Tool**   | Vite 8                                                    |
+| **State**        | Zustand 5 (`persist` 미들웨어)                              |
 | **Styling**      | Tailwind CSS v4                                           |
+| **Image Export** | html-to-image (영수증 이미지 생성)                            |
 | **Icons**        | Tabler Icons                                              |
 | **External API** | [manana.kr 노래방 API](https://api.manana.kr) (TJ · 금영) |
 
@@ -92,42 +93,22 @@
 
 ```
 en.core/
-├── public/                     # 정적 파일 (로고, 파비콘)
-├── src/
-│   ├── components/             # 재사용 UI 컴포넌트
-│   │   ├── AddSongDrawer.tsx       # 애창곡 추가·수정 드로어
-│   │   ├── SetlistPickerDrawer.tsx # 셋리스트 선택 모드 드로어
-│   │   ├── Drawer.tsx              # 공통 드로어(바텀시트)
-│   │   ├── BottomNavbar.tsx        # 하단 탭 네비게이션
-│   │   ├── StickyHeader.tsx        # 스크롤 시 고정 헤더
-│   │   ├── HeroSection.tsx         # 페이지 상단 로고·타이틀 영역
-│   │   ├── SongCard.tsx            # 검색 결과 곡 카드
-│   │   ├── SavedSongCard.tsx       # 저장된 애창곡 카드
-│   │   ├── TagChip.tsx             # 태그 칩
-│   │   └── EmptySongs.tsx          # 곡이 없을 때 안내 화면
-│   ├── pages/                 # 탭별 페이지
-│   │   ├── MySongs.tsx             # 나의 애창곡
-│   │   ├── SongSearch.tsx          # 노래방 검색
-│   │   ├── NewSongs.tsx            # 이번 주 신곡
-│   │   └── Setlist.tsx             # 셋리스트
-│   ├── store/                 # Zustand 스토어 (localStorage 저장)
-│   │   ├── useSongStore.ts         # 애창곡 상태
-│   │   ├── useSetlistStore.ts      # 셋리스트 상태
-│   │   └── useTagStore.ts          # 태그 상태
-│   ├── hooks/                 # 커스텀 훅
-│   │   ├── useSongActions.ts       # 검색 → 애창곡 추가 로직
-│   │   └── useTagSelection.ts      # 태그 선택·토글 로직
-│   ├── type/                  # 타입 정의
-│   │   ├── songs.ts                # Song 타입
-│   │   ├── tags.ts                 # Tag 타입 · 기본 태그
-│   │   └── api.ts                  # 노래방 API 응답 타입
-│   ├── App.tsx                # 탭 기반 페이지 라우팅
-│   ├── main.tsx               # 엔트리 포인트
-│   └── index.css             # 전역 스타일 · 컬러 토큰
-├── index.html
-├── vite.config.ts
+├── public/ # 정적 파일 (로고, 파비콘)
+├── src/ 
+├── components/ # 재사용 UI (드로어, 곡 카드, 태그 칩, 하단 탭 등) 
+├── pages/ # 탭별 페이지 (애창곡 / 검색 / 신곡 / 셋리스트) 
+├── store/ # Zustand 스토어 — 곡·셋리스트·태그 (localStorage 저장) 
+├── hooks/ # 커스텀 훅 (곡 추가, 태그 선택 등)  
+├── utils/ # 공통 유틸 (백업 내보내기/가져오기, 시간 표기 등) 
+├── type/ # 타입 정의 (Song, Tag, API 응답) 
+├── App.tsx # 탭 기반 페이지 전환 
+├── main.tsx # 엔트리 포인트 
+└── index.css # 전역 스타일 · 컬러 토큰
+├── index.html 
+├── vite.config.ts 
 └── package.json
 ```
+
 
 <br/>
 
@@ -135,7 +116,7 @@ en.core/
 
 ### 요구 사항
 
-- Node.js 18 이상
+- Node.js **20.19+** 또는 **22.12+** (Vite 8 요구 사항)
 - npm
 
 ### 설치 및 실행
@@ -171,7 +152,7 @@ npm run preview
 
 |                                                           애창곡 빈 화면                                                            |                                                             애창곡 출력                                                             |
 | :---------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="603" height="1311" alt="Image" src="https://github.com/user-attachments/assets/0027855f-a97a-413c-953d-1c658b71cb43" /> | <img width="603" height="1311" alt="Image" src="https://github.com/user-attachments/assets/35cdd595-c080-49e1-8f78-a3a759541fe7" /> |
+| <img width="603" height="1311" alt="애창곡 빈 화면" src="https://github.com/user-attachments/assets/0027855f-a97a-413c-953d-1c658b71cb43" /> | <img width="603" height="1311" alt="애창곡 차있는 화면" src="https://github.com/user-attachments/assets/35cdd595-c080-49e1-8f78-a3a759541fe7" /> |
 
 <br/>
 <br />
@@ -180,7 +161,7 @@ npm run preview
 
 TJ/금영 노래방 API로 곡 제목·가수를 검색하고 이번 주 신곡 확인, 애창곡으로 바로 저장이 가능합니다
 <br /><br />
-<img width="454" height="670" alt="Image" src="https://github.com/user-attachments/assets/7e7f0759-ced8-45a3-ab89-01ca35cd1f72" />
+<img width="454" height="670" alt="곡 검색" src="https://github.com/user-attachments/assets/7e7f0759-ced8-45a3-ab89-01ca35cd1f72" />
 
 <br /> 
 <br />
@@ -193,7 +174,7 @@ TJ/금영 노래방 API로 곡 제목·가수를 검색하고 이번 주 신곡 
 
 |                                                           셋리스트(랜덤)                                                           |                                                           셋리스트(선택)                                                           |
 | :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="454" height="670" alt="Image" src="https://github.com/user-attachments/assets/6267badc-66c6-4af2-b31d-95274d272f73" /> | <img width="454" height="670" alt="Image" src="https://github.com/user-attachments/assets/1a58ba80-7ca0-4275-a6e1-1bed0a4e26ca" /> |
+| <img width="454" height="670" alt="셋리스트 랜덤뽑기" src="https://github.com/user-attachments/assets/6267badc-66c6-4af2-b31d-95274d272f73" /> | <img width="454" height="670" alt="셋리스트 선택뽑기" src="https://github.com/user-attachments/assets/1a58ba80-7ca0-4275-a6e1-1bed0a4e26ca" /> |
 
 <br/>
 <br/>
@@ -202,7 +183,7 @@ TJ/금영 노래방 API로 곡 제목·가수를 검색하고 이번 주 신곡 
 
 오늘 부른 노래(셋리스트)들을 영수증 모양의 이미지로 정산, 공유 및 저장할 수 있습니다. html-to-image 라이브러리를 활용했습니다.
 
-<img width="454" height="670" alt="Image" src="https://github.com/user-attachments/assets/b991033c-2d0b-468f-9012-abe0e154c304" />
+<img width="454" height="670" alt="영수증 만들기" src="https://github.com/user-attachments/assets/b991033c-2d0b-468f-9012-abe0e154c304" />
 
 <br/>
 <br/>
