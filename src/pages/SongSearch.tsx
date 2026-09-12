@@ -6,6 +6,8 @@ import { useSongActions } from "../hooks/useSongActions";
 import { type BrandKey, type KaraokeAPISong } from "../type/api";
 import { ModeButton } from "../components/ModeButton";
 
+import { IconMicrophone, IconSearch, IconX, IconAlertTriangle } from "@tabler/icons-react";
+
 type SearchResult = KaraokeAPISong & { brand: string };
 
 const SongSearch = () => {
@@ -77,7 +79,7 @@ const SongSearch = () => {
         <div className="flex gap-2">
           <ModeButton
             active={brand === "tj"}
-            icon="ti-microphone"
+            icon={IconMicrophone}
             label="TJ 노래방"
             onClick={() => {
               setBrand("tj");
@@ -87,7 +89,7 @@ const SongSearch = () => {
           />
           <ModeButton
             active={brand === "kumyoung"}
-            icon="ti-microphone"
+            icon={IconMicrophone}
             label="금영 노래방"
             onClick={() => {
               setBrand("kumyoung");
@@ -102,7 +104,7 @@ const SongSearch = () => {
           className="flex items-center gap-2 border border-(--color-surface-elevated) rounded-xl
         bg-(--color-surface) px-4 py-2 mb-3"
         >
-          <i className="ti ti-search text-(--color-text-placeholder)" />
+          <IconSearch className="w-4 h-4 text-(--color-text-placeholder)" />
           <input
             type="text"
             value={query}
@@ -124,7 +126,7 @@ const SongSearch = () => {
               aria-label="입력 내용 삭제"
               className="flex items-center"
             >
-              <i className="ti ti-x text-(--color-text-placeholder) text-xs" />
+              <IconX className="w-4.5 h-4.5 text-(--color-text-placeholder) text-xs" />
             </button>
           )}
         </div>
@@ -164,7 +166,7 @@ const SongSearch = () => {
         {!isLoading && !isError && isSearched && results.length === 0 && (
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
-              <i className="ti ti-search text-xl mb-0.5" />
+              <IconSearch className="w-4 h-4 text-xl mb-0.5" />
             </div>
             <p className="text-sm text-(--color-text-placeholder) mt-2 text-center">
               '{query}' 검색 결과가 없어요. <br />
@@ -179,7 +181,7 @@ const SongSearch = () => {
         {!isLoading && isError && (
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550] mb-1">
-              <i className="ti ti-alert-triangle text-xl mb-0.5" />
+              <IconAlertTriangle className="w-4 h-4 text-xl mb-0.5" />
             </div>
             <p className="text-sm text-(--color-text-placeholder) mt-2 text-center">
               검색 중 문제가 발생했어요. <br />

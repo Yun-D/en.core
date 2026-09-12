@@ -1,3 +1,5 @@
+import { IconMusic, IconSearch, IconPlus } from "@tabler/icons-react";
+
 interface EmptySongsProps {
   onSearchClick: () => void; // 검색 탭으로 이동하는 함수 받아오기
   onAddClick: () => void; // 직접 추가하기 함수 받아오기
@@ -6,7 +8,7 @@ const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
   return (
     <div className="flex flex-col items-center text-center justify-center gap-3">
       <div className="flex items-center justify-center rounded-full h-10 w-10 border border-(--color-accent) bg-[#f472b550]">
-        <i className="text-xl ti ti-music" />
+        <IconMusic className="w-5 h-5" />
       </div>
 
       <div className="flex flex-col gap-1">
@@ -23,7 +25,7 @@ const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
           bg-[#f472b590] hover:bg-[#e37fb3] transition-colors duration-200
           px-5 py-2 text-sm font-semibold rounded-full items-center flex"
         >
-          <i className="ti ti-search mr-2" aria-hidden="true" />
+          <IconSearch className="w-4 h-4 mr-2" />
           노래 검색하러 가기
         </button>
 
@@ -33,7 +35,7 @@ const EmptySongs = ({ onSearchClick, onAddClick }: EmptySongsProps) => {
           bg-[#f472b590] hover:bg-[#e37fb3] transition-colors duration-200
           px-5 py-2 text-sm font-semibold rounded-full items-center flex"
         >
-          <i className="ti ti-plus mr-2" />
+          <IconPlus className="w-4 h-4 mr-2" />
           직접 추가하기
         </button>
       </div>

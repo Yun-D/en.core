@@ -1,8 +1,11 @@
+import { IconHeart, IconSearch, IconDice } from "@tabler/icons-react";
+
 const tabs = [
-  { key: "songs", label: "애창곡", icon: "ti-heart" },
-  { key: "search", label: "곡 검색", icon: "ti-search" },
-  { key: "setlist", label: "셋리스트", icon: "ti-dice" },
+  { key: "songs", label: "애창곡", Icon: IconHeart },
+  { key: "search", label: "곡 검색", Icon: IconSearch },
+  { key: "setlist", label: "셋리스트", Icon: IconDice },
 ];
+//icon을 문자열이 아닌 컴포넌트 자체로 담아둠 (JSX에서 쓰려면 대문자로 시작해야 함)
 
 export type TabKey = (typeof tabs)[number]["key"];
 //tabs 배열의 각 요소의 key 값만 뽑은 유니온 타입
@@ -23,6 +26,7 @@ const BottomNavbar = ({ active, onChange }: BottomNavProps) => {
     >
       {tabs.map((tab) => {
         const isActive = active === tab.key;
+        const Icon = tab.Icon;
         return (
           <button
             key={tab.key}
@@ -33,8 +37,8 @@ const BottomNavbar = ({ active, onChange }: BottomNavProps) => {
               className={`w-12 h-6 rounded-full flex items-center justify-center transition-colors duration-300
               ${isActive ? "bg-[rgba(244,114,182,0.18)]" : "bg-transparent"}`}
             >
-              <i
-                className={`ti ${tab.icon} text-2xl transition-colors duration-200 ${
+              <Icon
+                className={`w-6 h-6 transition-colors duration-200 ${
                   isActive
                     ? "text-(--color-accent)"
                     : "text-(--color-text-placeholder)"

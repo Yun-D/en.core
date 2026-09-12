@@ -14,6 +14,7 @@ import { TagChip } from "../components/TagChip";
 import { getTagChipCategory } from "../type/tags";
 import BackupDrawer from "../components/BackupDrawer";
 import TagDrawer from "../components/TagDrawer";
+import { IconDots, IconPlus, IconSearch, IconSettings } from "@tabler/icons-react"; 
 
 interface MySongsProps {
   onTabChange: (tab: TabKey) => void;
@@ -98,7 +99,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full
             active:bg-(--color-surface-hover)"
             >
-              <i className="ti ti-dots" />
+              <IconDots className="w-5 h-5" aria-hidden="true" />
             </button>
           }
         />
@@ -109,7 +110,8 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
             className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-primary) 
             border border-(--color-text-primary) rounded-lg px-3 py-1"
           >
-            <i className="ti ti-plus text-xs" aria-hidden="true" />곡 추가
+            <IconPlus className="w-4 h-4" aria-hidden="true" />
+            곡 추가
           </button>
         </StickyHeader>
 
@@ -122,7 +124,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
             className="flex items-center gap-2 border border-(--color-surface-elevated) rounded-xl 
         bg-(--color-surface) px-4 py-2"
           >
-            <i className="ti ti-search text-(--color-text-placeholder)" />
+            <IconSearch className="w-4.5 h-4.5 text-(--color-text-placeholder)" />
             <input
               type="text"
               className="text-base outline-none w-full"
@@ -139,7 +141,7 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               onClick={handleAddTag}
               className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
-              <i className="ti ti-settings text-xs" aria-hidden="true" />
+              <IconSettings className="w-4 h-4" aria-hidden="true" />
               태그 관리
             </button>
           </div>
@@ -183,7 +185,8 @@ const MySongs = ({ onTabChange }: MySongsProps) => {
               onClick={handleAddSong}
               className="cursor-pointer flex items-center gap-1 text-sm text-(--color-text-placeholder) border border-(--color-surface-elevated) rounded-lg px-3 py-1"
             >
-              <i className="ti ti-plus text-xs" aria-hidden="true" />곡 추가
+              <IconPlus className="w-4 h-4" aria-hidden="true" />
+              곡 추가
             </button>
           </div>
         </div>

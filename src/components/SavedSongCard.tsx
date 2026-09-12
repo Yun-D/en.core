@@ -1,6 +1,7 @@
 import { type Song } from "../type/songs";
 import { useTagStore } from "../store/useTagStore";
 import { getTagChipCategory } from "../type/tags";
+import { IconBookmarkFilled } from "@tabler/icons-react";
 
 // 칩 색상은 카테고리가 아니라 기본/사용자 여부를 따라감
 const TAG_COLORS = {
@@ -69,12 +70,14 @@ const SavedSongCard = ({ song, onClick }: SavedSongCardProps) => {
           </div>
         )}
 
-        <i
-          className={`ti ti-bookmark-filled text-lg shrink-0 ${
+        <IconBookmarkFilled
+          className={`w-4.5 h-4.5 text-lg shrink-0 ${
             song.isLater
               ? "text-(--tag-key-text)"
               : "text-(--color-text-placeholder)"
-          }`}
+          }`
+          
+        }
         />
       </div>
 

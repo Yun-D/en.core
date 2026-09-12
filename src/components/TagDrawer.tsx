@@ -3,6 +3,7 @@ import Drawer from "./Drawer";
 import { TagChip } from "./TagChip";
 import { getTagChipCategory, type TagCategory } from "../type/tags";
 import { useState } from "react";
+import { IconX } from "@tabler/icons-react";
 
 interface TagDrawerProps {
   isOpen: boolean;
@@ -113,7 +114,7 @@ const TagDrawer = ({ isOpen, onClose }: TagDrawerProps) => {
                     />
                   </span>
                   <button aria-label="닫기" onClick={handleCancelAdding}>
-                    <i className="ti ti-x" />
+                    <IconX className="w-4.5 h-4.5" aria-hidden="true" />
                   </button>
                 </div>
               )}

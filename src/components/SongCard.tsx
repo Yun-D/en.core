@@ -1,4 +1,5 @@
 import { type BrandKey, type KaraokeAPISong } from "../type/api";
+import { IconPlus, IconCheck } from "@tabler/icons-react";
 
 interface SongCardProps {
   song: KaraokeAPISong;
@@ -42,7 +43,7 @@ const SongCard = ({ song, brand, isAdded, onAdd }: SongCardProps) => {
           className="text-xs shrink-0 px-3 py-1.5 rounded-2xl flex items-center
           border border-(--color-surface-elevated) text-(--color-text-placeholder)"
         >
-          <i className="ti ti-check text-xs mr-1" />
+          <IconCheck className="w-3 h-3 mr-1" />
           추가됨
         </span>
       ) : (
@@ -51,7 +52,8 @@ const SongCard = ({ song, brand, isAdded, onAdd }: SongCardProps) => {
           className="cursor-pointer text-xs shrink-0 px-3 py-1.5 rounded-2xl flex items-center
           border-(--tag-mood-border) text-(--tag-mood-hover-text) bg-(--tag-mood-hover-bg)"
         >
-          <i className="ti ti-plus text-xs mr-1" aria-hidden="true" />곡 추가
+          <IconPlus className="w-3 h-3 mr-1" />
+          곡 추가
         </button>
       )}
     </div>

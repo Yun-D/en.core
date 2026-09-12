@@ -1,14 +1,18 @@
+import type { TablerIcon } from "@tabler/icons-react";
+
 interface AccentButtonProps {
   onClick: () => void;
-  icon?: string;
+  icon?: TablerIcon;
   text: string;
+  size?: number;
   disabled?: boolean;
 }
 
 export const AccentButton = ({
   onClick,
-  icon,
+  icon: Icon,
   text,
+  size,
   disabled = false,
 }: AccentButtonProps) => {
   return (
@@ -20,7 +24,7 @@ export const AccentButton = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {icon && <i className={`ti ${icon} mr-2`} aria-hidden="true" />}
+      {Icon && <Icon className={`w-${size} h-${size} mr-2 inline`} aria-hidden="true" />}
       {text}
     </button>
   );

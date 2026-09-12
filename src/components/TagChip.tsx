@@ -1,3 +1,5 @@
+import { IconX } from "@tabler/icons-react";
+
 interface TagChipProps {
   label: string;
   category: "mood" | "situation" | "later" | "custom";
@@ -65,7 +67,7 @@ export const TagChip = ({
       >
         {label}
         <button onClick={onDelete} aria-label="삭제" className="cursor-pointer">
-          <i className="ti ti-x" />
+          <IconX className="w-4.5 h-4.5" aria-hidden="true" />
         </button>
       </span>
     );

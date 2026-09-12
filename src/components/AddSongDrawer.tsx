@@ -9,6 +9,7 @@ import { useTagSelection } from "../hooks/useTagSelection";
 import { TagChip } from "../components/TagChip";
 import { getTagChipCategory } from "../type/tags";
 import { AccentButton } from "./AccentButton";
+import { IconTrash, IconX, IconMicrophone, IconMinus, IconPlus } from "@tabler/icons-react";
 
 interface AddSongDrawerProps {
   isOpen: boolean;
@@ -99,7 +100,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
                   aria-label="삭제"
                   className="cursor-pointertext-(--color-text-placeholder) w-7 h-7"
                 >
-                  <i className="ti ti-trash text-lg" aria-hidden="true" />
+                  <IconTrash className="w-5 h-5" aria-hidden="true" />
                 </button>
               ))}
           </div>
@@ -109,7 +110,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
             aria-label="닫기"
             className="cursor-pointer text-(--color-text-placeholder) mr-1"
           >
-            <i className="ti ti-x text-xl" />
+            <IconX className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -117,7 +118,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
       {/* 곡명 + 가수 ----------------------------------------------------- */}
       <div className="flex-row flex items-center gap-3">
         <div className="w-20 h-20 shrink-0 rounded-xl flex items-center justify-center bg-linear-to-br from-(--color-accent) to-[#a855f7]">
-          <i className="ti ti-microphone text-2xl" />
+          <IconMicrophone className="w-7 h-7" aria-hidden="true" />
         </div>
 
         <div className="flex-col flex gap-2 w-full">
@@ -172,7 +173,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
           aria-label="키 낮추기"
           className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
         >
-          <i className="ti ti-minus text-sm" />
+          <IconMinus className="w-4 h-4" aria-hidden="true" />
         </button>
         <span className="text-sm font-semibold text-white min-w-10 text-center">
           {displayKey}
@@ -182,7 +183,7 @@ const AddSongDrawer = ({ isOpen, onClose, editSong }: AddSongDrawerProps) => {
           aria-label="키 높이기"
           className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
         >
-          <i className="ti ti-plus text-sm" />
+          <IconPlus className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
 

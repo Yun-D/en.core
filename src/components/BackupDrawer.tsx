@@ -8,6 +8,7 @@ import {
 } from "../utils/backup";
 import Drawer from "./Drawer";
 import { AccentButton } from "./AccentButton";
+import { IconDownload, IconUpload, IconAlertTriangle, IconCheck } from "@tabler/icons-react";
 
 interface BackupDrawerProps {
   isOpen: boolean;
@@ -114,7 +115,8 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
 
         <AccentButton
           onClick={handleExport}
-          icon="ti-download"
+          icon={IconDownload}
+          size={4.5}
           text="파일로 저장하기"
         />
       </section>
@@ -144,7 +146,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         px-4 py-3 text-sm font-semibold active:bg-(--color-surface-hover)"
             onClick={() => fileInputRef.current?.click()}
           >
-            <i className="ti ti-upload mr-1" aria-hidden="true" />
+            <IconUpload className="w-4 h-4 mr-1" aria-hidden="true" />
             파일 선택하기
           </button>
         )}
@@ -163,7 +165,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
             </div>
 
             <div className="flex items-start gap-1.5 text-xs text-(--tag-situation-text)">
-              <i className="ti ti-alert-triangle text-base shrink-0 mr-1" />
+              <IconAlertTriangle className="w-4 h-4 text-base shrink-0 mr-1" />
               <span>
                 불러오면 지금 저장된 애창곡이 이 파일 내용으로 바뀌어요.
               </span>
@@ -192,7 +194,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         {importPhase === "invalid" && (
           <div className="flex flex-col gap-3 rounded-xl bg-(--color-danger-soft) p-4">
             <div className="flex items-start gap-0.5 text-xs text-(--color-danger-text)">
-              <i className="ti ti-alert-triangle text-base shrink-0" />
+              <IconAlertTriangle className="w-4 h-4 text-base shrink-0" />
               <span>{errorMessage || "앵콜 백업 파일이 아니에요."}</span>
             </div>
 
@@ -210,7 +212,7 @@ const BackupDrawer = ({ isOpen, onClose }: BackupDrawerProps) => {
         {importPhase === "done" && (
           <div className="flex flex-col gap-3 rounded-xl bg-(--color-surface-hover) p-4">
             <div className="flex items-start gap-0.5 text-xs">
-              <i className="ti ti-check text-lg shrink-0 mr-1" />
+              <IconCheck className="w-4 h-4 shrink-0 mr-1" />
               <span>
                 {importedCount}곡을 불러왔어요. 이제 애창곡 목록에서
                 확인해보세요.

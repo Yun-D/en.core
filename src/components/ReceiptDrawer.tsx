@@ -5,6 +5,7 @@ import { formatDateTimeLocal } from "../utils/time";
 import ReceiptPreview from "./ReceiptPreview";
 import { saveReceiptImage } from "../utils/saveReceiptImage";
 import { AccentButton } from "./AccentButton";
+import {IconStar, IconStarFilled} from "@tabler/icons-react";
 
 interface ReceiptDrawerProps {
   isOpen: boolean;
@@ -105,13 +106,12 @@ const ReceiptDrawer = ({ isOpen, onClose, setlist }: ReceiptDrawerProps) => {
                   aria-label={`${song.title}을 오늘의 MVP로 지정`}
                   className="cursor-pointer flex items-center gap-3 px-4 py-3 text-left"
                 >
-                  <i
-                    className={`text-lg ${
-                      isMvp
-                        ? "ti ti-star-filled text-(--tag-key-text)"
-                        : "ti ti-star text-white/30"
-                    }`}
-                  />
+                  {isMvp ? (
+                    <IconStarFilled className="w-4.5 h-4.5 text-(--tag-key-text)" />
+                  ) : (
+                    <IconStar className="w-4.5 h-4.5 text-white/30" />
+                  )}
+                  
                   <p className="min-w-0 flex-1 truncate text-sm">
                     {song.title}
                     <span className="ml-1.5 text-xs text-(--color-text-placeholder)">

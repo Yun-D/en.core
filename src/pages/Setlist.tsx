@@ -13,6 +13,7 @@ import SetlistPickerDrawer from "../components/SetlistPickerDrawer";
 import { ModeButton } from "../components/ModeButton";
 import ReceiptDrawer from "../components/ReceiptDrawer";
 import SetlistResult from "../components/SetlistResult";
+import { IconX, IconHistory, IconArrowsShuffle, IconListCheck, IconMinus, IconPlus, IconRefresh, IconReceipt } from "@tabler/icons-react";
 
 import { formatRelativeTime } from "../utils/time";
 
@@ -99,7 +100,7 @@ const Setlist = () => {
         <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
           <div className="flex justify-between items-center">
             <p className="text-sm">
-              <i className="ti ti-history mr-2 text-(--tag-key-text)" />
+              <IconHistory className="w-4 h-4 mr-2 text-(--tag-key-text)" />
               {formatRelativeTime(setlist.createdAt, now)}에 만든 셋리스트예요.
             </p>
             <button
@@ -107,7 +108,7 @@ const Setlist = () => {
               aria-label="안내문 닫기"
               className="cursor-pointer"
             >
-              <i className="ti ti-x text-lg text-(--tag-key-text)" />
+              <IconX className="w-4.5 h-4.5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -148,13 +149,13 @@ const Setlist = () => {
           <div className="flex flex-row items-center gap-2 mt-2">
             <ModeButton
               active={mode === "random"}
-              icon="ti ti-arrows-shuffle"
+              icon={IconArrowsShuffle}
               label="랜덤"
               onClick={() => setMode("random")}
             />
             <ModeButton
               active={mode === "choose"}
-              icon="ti ti-list-check"
+              icon={IconListCheck}
               label="선택"
               onClick={() => setMode("choose")}
             />
@@ -192,7 +193,7 @@ const Setlist = () => {
                     aria-label="곡 수 줄이기"
                     className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
                   >
-                    <i className="ti ti-minus text-sm" />
+                    <IconMinus className="w-4 h-4" aria-hidden="true" />
                   </button>
 
                   {isEditingCount ? (
@@ -225,7 +226,7 @@ const Setlist = () => {
                     aria-label="곡 수 더하기"
                     className="cursor-pointer w-8 h-8 rounded-lg bg-(--color-surface) text-white flex items-center justify-center"
                   >
-                    <i className="ti ti-plus text-sm" />
+                    <IconPlus className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -253,22 +254,23 @@ const Setlist = () => {
       <div className="flex-row flex gap-2 pt-4">
         <button
           onClick={mode === "choose" ? handleOpenSelectPicker : handleDraw}
-          className="cursor-pointer w-full rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
+          className="cursor-pointer w-full flex items-center justify-center rounded-xl bg-(--color-accent) hover:bg-(--color-accent-hover) 
           transition-colors duration-200 px-5 py-2 text-sm font-semibold"
         >
-          <i
-            className={`ti ${hasResult ? "ti-refresh" : "ti-arrows-shuffle"} text-[15px] mr-2`}
-            aria-hidden="true"
-          />
+          {hasResult ? (
+            <IconRefresh className="w-4 h-4 mr-2" aria-hidden="true" />
+          ) : (
+            <IconArrowsShuffle className="w-4 h-4 mr-2" aria-hidden="true" />
+          )}
           {mode === "choose" ? "곡 선택하기" : hasResult ? "다시 뽑기" : "뽑기"}
         </button>
         {hasResult && (
           <button
             onClick={() => setIsReceiptOpen(true)}
-            className="cursor-pointer w-full rounded-xl bg-(--tag-key-border) hover:bg-(--tag-key-text)/70
+            className="cursor-pointer w-full flex items-center justify-center rounded-xl bg-(--tag-key-border) hover:bg-(--tag-key-text)/70
       transition-colors duration-200 px-5 py-2 text-sm font-semibold"
           >
-            <i className="ti ti-receipt text-[15px] mr-2" aria-hidden="true" />
+            <IconReceipt className="w-4 h-4 mr-2" aria-hidden="true" />
             영수증 만들기
           </button>
         )}
