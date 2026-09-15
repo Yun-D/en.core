@@ -100,7 +100,7 @@ const Setlist = () => {
         <div className="mb-2 rounded-xl border border-(--tag-key-text)/60 bg-(--tag-key-text)/15 p-3">
           <div className="flex justify-between items-center">
             <p className="text-sm">
-              <IconHistory className="w-4 h-4 mr-2 text-(--tag-key-text)" />
+              <IconHistory className="w-4 h-4 mr-2 text-(--tag-key-text) inline" />
               {formatRelativeTime(setlist.createdAt, now)}에 만든 셋리스트예요.
             </p>
             <button
