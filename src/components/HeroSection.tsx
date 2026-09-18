@@ -10,7 +10,7 @@ const HeroSection = ({ title, subtitle, action }: HeroSectionProps) => {
   return (
     <div className="pt-6 mb-10 flex flex-col">
       <div className="flex justify-between items-center">
-        <img src="/logo.svg" alt="en.core logo" className="w-20" />
+        <img src="/logo.svg" alt="en.core logo" className="w-20" width="142" height="73" />
         {action}
       </div>
 
