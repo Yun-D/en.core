@@ -23,11 +23,12 @@ const StickyHeader = ({ title, preListRef, children }: StickyHeaderProps) => {
 
   return (
     <div
-      className={`fixed inset-x-0 top-0 z-50 mx-auto h-14 w-full max-w-107.5 bg-(--color-surface) px-5 flex 
+      className={`fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-107.5 bg-(--color-surface)
+        h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] px-5 flex 
         items-center justify-between transition-opacity duration-200
     ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
-      <span className="text-[18px] font-semibold text-(--color-text)">
+      <span className="text-[18px] font-semibold text-(--color-text-primary)">
         {title}
       </span>
       {children}
